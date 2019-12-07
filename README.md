@@ -3,7 +3,7 @@
 
 ##install laravel/passport
 
-```php
+```shell
 php artisan migrate
 php artisan passport:install
 ```
