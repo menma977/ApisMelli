@@ -1,13 +1,14 @@
-APISMELLI Installation
--------------------------------------------
+#APISMELLI Installation
 
-install laravel/passport
--------------------------------------------
+
+##install laravel/passport
+
+```php
 php artisan migrate
 php artisan passport:install
+```
 
-<?php
-
+```php
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,9 +19,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 }
-?>
+```
 
-<?php
+```php
 use Laravel\Passport\Passport;
 
 protected $policies = [
@@ -33,8 +34,11 @@ protected $policies = [
 
     Passport::routes();
 }
-?>
+```
 
+###config/auth.php
+####TokenGuard
+```js
 'guards' => [
     'web' => [
         'driver' => 'session',
@@ -46,9 +50,8 @@ protected $policies = [
         'provider' => 'users',
     ],
 ],
+```
 
-passport link
-https://laravel.com/docs/master/passport
+[passport link](https://laravel.com/docs/master/passport)
 
-chart link
-https://dev.to/arielsalvadordev/use-laravel-charts-in-laravel-5bbm
+[chart link](https://dev.to/arielsalvadordev/use-laravel-charts-in-laravel-5bbm)
