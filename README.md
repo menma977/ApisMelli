@@ -1,7 +1,7 @@
-#APISMELLI Installation
+# APISMELLI Installation
 
 
-##install laravel/passport
+## install laravel/passport
 
 ```shell
 php artisan migrate
@@ -36,8 +36,8 @@ protected $policies = [
 }
 ```
 
-###config/auth.php
-####TokenGuard
+### config/auth.php
+#### TokenGuard
 ```js
 'guards' => [
     'web' => [
