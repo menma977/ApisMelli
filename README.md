@@ -31,7 +31,8 @@ protected $policies = [
     Passport::routes();
 }
 -------------------------------------------
-'guards' => [
+{
+    'guards' => [
     'web' => [
         'driver' => 'session',
         'provider' => 'users',
@@ -42,6 +43,7 @@ protected $policies = [
         'provider' => 'users',
     ],
 ],
+}
 -------------------------------------------
 passport link
 ===========================================
