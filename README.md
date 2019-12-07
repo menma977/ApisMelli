@@ -1,15 +1,12 @@
-============================================
 APISMELLI Installation
 -------------------------------------------
 
 install laravel/passport
-============================================
+-------------------------------------------
 php artisan migrate
 php artisan passport:install
--------------------------------------------
 
-===========================================
-?php
+<?php
 
 namespace App;
 
@@ -21,9 +18,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 }
--------------------------------------------
+?>
 
-===========================================
+<?php
 use Laravel\Passport\Passport;
 
 protected $policies = [
@@ -36,9 +33,8 @@ protected $policies = [
 
     Passport::routes();
 }
--------------------------------------------
+?>
 
-===========================================
 'guards' => [
     'web' => [
         'driver' => 'session',
@@ -50,7 +46,6 @@ protected $policies = [
         'provider' => 'users',
     ],
 ],
--------------------------------------------
 
 passport link
 https://laravel.com/docs/master/passport
