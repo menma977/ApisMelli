@@ -5,6 +5,7 @@ laravel/passport
 php artisan migrate
 php artisan passport:install
 -------------------------------------------
+-------------------------------------------
 ?php
 
 namespace App;
@@ -17,6 +18,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 }
+-------------------------------------------
 -------------------------------------------
 use Laravel\Passport\Passport;
 
@@ -31,8 +33,8 @@ protected $policies = [
     Passport::routes();
 }
 -------------------------------------------
-{
-    'guards' => [
+-------------------------------------------
+'guards' => [
     'web' => [
         'driver' => 'session',
         'provider' => 'users',
@@ -43,12 +45,15 @@ protected $policies = [
         'provider' => 'users',
     ],
 ],
-}
+-------------------------------------------
 -------------------------------------------
 passport link
 ===========================================
+-------------------------------------------
 https://laravel.com/docs/master/passport
 -------------------------------------------
 chart link
 ===========================================
+-------------------------------------------
 https://dev.to/arielsalvadordev/use-laravel-charts-in-laravel-5bbm
+-------------------------------------------
