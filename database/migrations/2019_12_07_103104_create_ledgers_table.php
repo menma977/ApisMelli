@@ -15,6 +15,7 @@ class CreateLedgersTable extends Migration
     {
         Schema::create('ledgers', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('user');
             $table->string('debit');
             $table->string('credit');
             $table->string('description');

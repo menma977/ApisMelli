@@ -6,5 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ledger extends Model
 {
-    //
+    protected $fillable = [
+        'user',
+        'debit',
+        'credit',
+        'description',
+        'type',
+        'status',
+    ];
 }
