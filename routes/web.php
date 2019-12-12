@@ -43,12 +43,18 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
 
 Route::group(['prefix' => 'bee', 'as' => 'bee.'], function () {
     Route::get('/', 'BeeController@index')->name('index');
-    Route::get('/create', 'BeeController@create')->name('create')->middleware(['rule', 'auth']);
     Route::post('/store', 'BeeController@store')->name('store')->middleware(['rule', 'auth']);
     Route::get('/show', 'BeeController@show')->name('show')->middleware(['rule', 'auth']);
     Route::get('/edit/{id}', 'BeeController@edit')->name('edit')->middleware(['rule', 'auth']);
     Route::post('/update/{id}', 'BeeController@update')->name('update')->middleware(['rule', 'auth']);
     Route::get('/delete/{id}', 'BeeController@destroy')->name('delete')->middleware(['rule', 'auth']);
+    Route::group(['prefix' => 'history', 'as' => 'history.'], function () {
+        Route::get('/', 'BuyHistoryController@index')->name('index')->middleware(['rule', 'auth']);
+        Route::post('/store', 'BuyHistoryController@store')->name('store');
+        Route::get('/show', 'BuyHistoryController@show')->name('show')->middleware(['rule', 'auth']);
+        Route::get('/update/{id}/{status}/{count}/{user}/{code}', 'BuyHistoryController@update')->name('update')->middleware(['rule', 'auth']);
+        Route::get('/delete/{id}', 'BuyHistoryController@destroy')->name('delete')->middleware(['rule', 'auth']);
+    });
 });
 
 Route::group(['prefix' => 'ledger', 'as' => 'ledger.'], function () {
@@ -59,16 +65,6 @@ Route::group(['prefix' => 'ledger', 'as' => 'ledger.'], function () {
     Route::get('/edit/{id}', 'LedgerController@edit')->name('edit')->middleware(['rule', 'auth']);
     Route::post('/update/{id}', 'LedgerController@update')->name('update');
     Route::get('/delete/{id}', 'LedgerController@destroy')->name('delete');
-});
-
-Route::group(['prefix' => 'history', 'as' => 'history.'], function () {
-    Route::get('/', 'BuyHistoryController@index')->name('index');
-    Route::get('/create', 'BuyHistoryController@create')->name('create');
-    Route::post('/store', 'BuyHistoryController@store')->name('store');
-    Route::get('/show', 'BuyHistoryController@show')->name('show');
-    Route::get('/edit/{id}', 'BuyHistoryController@edit')->name('edit');
-    Route::post('/update/{id}', 'BuyHistoryController@update')->name('update');
-    Route::get('/delete/{id}', 'BuyHistoryController@destroy')->name('delete');
 });
 
 Route::group(['prefix' => 'binary', 'as' => 'binary.'], function () {

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\model\Bee;
 use App\model\BuyHistory;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BuyHistoryController extends Controller
 {
@@ -14,7 +18,25 @@ class BuyHistoryController extends Controller
      */
     public function index()
     {
-        //
+        if (Auth::user()->rule == 0) {
+            $buyHistory = BuyHistory::all();
+        } else {
+            $buyHistory = BuyHistory::where('user', Auth::user()->id)->get();
+        }
+        $buyHistory->map(function ($item) {
+            $item->user_data = User::find($item->user);
+            if ($item->sand) {
+                $item->send_data = User::find($item->send);
+            }
+            $item->bee = Bee::where('code', $item->code)->get();
+            return $item;
+        });
+
+        $data = [
+            'buyHistory' => $buyHistory,
+        ];
+
+        return view('bee.history.index', $data);
     }
 
     /**
@@ -35,7 +57,16 @@ class BuyHistoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'stupe' => 'required|numeric|min:1',
+        ]);
+        $buyHistory = new BuyHistory();
+        $buyHistory->user = Auth::user()->id;
+        $buyHistory->code = Carbon::now()->format("dmYHis");
+        $buyHistory->count = $request->stupe;
+        $buyHistory->save();
+
+        return redirect()->back();
     }
 
     /**
@@ -67,9 +98,22 @@ class BuyHistoryController extends Controller
      * @param  \App\model\BuyHistory  $buyHistory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BuyHistory $buyHistory)
+    public function update($id, $status, $count, $user, $code)
     {
-        //
+        $buyHistory = BuyHistory::find($id);
+        $buyHistory->status = $status;
+        $buyHistory->save();
+        if ($buyHistory->status != 4) {
+            for ($i = 0; $i < $count; $i++) {
+                $bee = Bee::whereNull('user')->whereNull('code')->first();
+                $bee->user = $user;
+                $bee->code = $code;
+                $bee->status = 0;
+                $bee->save();
+            }
+        }
+
+        return redirect()->back();
     }
 
     /**

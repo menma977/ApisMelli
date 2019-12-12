@@ -20,7 +20,7 @@ class CreateBeesTable extends Migration
             $table->string('code')->nullable();
             $table->date('buy')->nullable();
             $table->date('sell')->nullable();
-            $table->integer('status')->default(0);
+            $table->integer('status')->default(6);
             $table->timestamps();
         });
     }

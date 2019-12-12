@@ -10,5 +10,7 @@ class BuyHistory extends Model
         'user',
         'send',
         'code',
+        'count',
+        'status',
     ];
 }

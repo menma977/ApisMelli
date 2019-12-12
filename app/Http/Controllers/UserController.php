@@ -93,17 +93,23 @@ class UserController extends Controller
 
         foreach ($period as $id => $dt) {
             $ledger = Ledger::where('user', $user->id)->whereDate('created_at', $dt->format("Y-m-d"))->first();
-            $buyHistory = BuyHistory::where('user', $user->id)->whereDate('created_at', $dt->format("Y-m-d"))->first();
-            if ($ledger && $buyHistory) {
-                $buyHistory->bee = Bee::where('code', $buyHistory->code)->get();
-                $buyHistory->bee->map(function ($item) {
-                    $now = Carbon::now();
-                    $begin = Carbon::parse($item->buy);
-                    $end = Carbon::parse($item->sell);
-                    $diffNow = $begin->diffInDays($now);
-                    $diff = $end->diffInDays($begin);
-                    $item->percent = number_format(($diffNow / $diff * 100), 2, '.', '');
+            $buyHistory = BuyHistory::where('user', $user->id)->whereDate('created_at', $dt->format("Y-m-d"))->orderBy('id', 'desc')->get();
+            $buyHistory->map(function ($item) {
+                $item->bee = Bee::where('code', $item->code)->get();
+                $item->bee->map(function ($item) {
+                    if ($item->buy && $item->sell) {
+                        $now = Carbon::now();
+                        $begin = Carbon::parse($item->buy)->format("d/m/Y");
+                        $end = Carbon::parse($item->sell)->format("d/m/Y");
+                        $diffNow = $begin->diffInDays($now);
+                        $diff = $end->diffInDays($begin);
+                        $item->percent = number_format(($diffNow / $diff * 100), 2, '.', '');
+                    }
+                    return $item;
                 });
+                return $item;
+            });
+            if ($ledger && $buyHistory) {
                 $object[$id] = [
                     "id" => $id,
                     "date" => $dt->format("l d/m/Y"),
@@ -120,15 +126,6 @@ class UserController extends Controller
                     'buyHistory' => null,
                 ];
             } else if ($buyHistory) {
-                $buyHistory->bee = Bee::where('code', $buyHistory->code)->get();
-                $buyHistory->bee->map(function ($item) {
-                    $now = Carbon::now();
-                    $begin = Carbon::parse($item->buy);
-                    $end = Carbon::parse($item->sell);
-                    $diffNow = $end->diffInDays($now);
-                    $diff = $end->diffInDays($begin);
-                    $item->percent = $diffNow / $diff * 100;
-                });
                 $object[$id] = [
                     "id" => $id,
                     "date" => $dt->format("l d/m/Y"),
@@ -138,8 +135,6 @@ class UserController extends Controller
                 ];
             }
         }
-
-        // dump(array_reverse($object));
 
         $data = [
             'user' => $user,

@@ -57,28 +57,43 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="card card-info card-outline collapsed-card">
-            <div class="card-header">
-                <h3 class="card-title">Pesan Stup</h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-plus"></i>
-                    </button>
+        <form class="form-horizontal" action="{{ route('bee.history.store') }}" method="POST">
+            @csrf
+            <div class="card card-warning card-outline collapsed-card">
+                <div class="card-header">
+                    <h3 class="card-title">Pesan Stup</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            @error('stupe')
+                            <i class="fas fa-minus"></i>
+                            @else
+                            <i class="fas fa-plus"></i>
+                            @enderror
+                        </button>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body" @error('stupe') style="display: block;" @else style="display: none;" @enderror>
+                    <div class="form-group">
+                        <label for="stupe">
+                            @error('stupe')<i class="far fa-times-circle text-danger"></i>@enderror
+                            Jumlah Stup yang di pesan
+                        </label>
+                        <input type="number" class="form-control @error('stupe') is-invalid @enderror" id="stupe"
+                            name="stupe" value="{{ old("stupe") }}" placeholder="0000">
+                        @error('stupe')
+                        <span class="text-danger" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer" @error('stupe') style="display: block;" @else style="display: none;" @enderror>
+                    <button type="submit" class="btn btn-warning">Pesan Stup</button>
                 </div>
             </div>
-            <!-- /.card-header -->
-            <div class="card-body" style="display: none;">
-                <div class="form-group">
-                    <label for="stupe">Jumlah Stup yang di pesan</label>
-                    <input type="number" class="form-control" id="stupe" placeholder="0000">
-                </div>
-            </div>
-            <!-- /.card-body -->
-            <div class="card-footer" style="display: none;">
-                <button type="button" class="btn btn-warning">Pesan Stup</button>
-            </div>
-        </div>
+        </form>
     </div>
     <div class="col-md-12">
         <div class="card card-warning card-outline">

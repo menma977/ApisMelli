@@ -59,10 +59,20 @@
                         </li>
                     </ul>
                 </li>
-                <li
-                    class="nav-item has-treeview {{ request()->is(['bee', 'bee/create', 'bee/edit/*', 'bee/password/edit']) ? 'menu-open' : '' }}">
-                    <a href="#"
-                        class="nav-link {{ request()->is(['bee', 'bee/create', 'bee/edit/*', 'bee/password/edit']) ? 'active' : '' }}">
+                <li class="nav-item has-treeview {{ request()->is([
+                        'bee',
+                        'bee/create',
+                        'bee/edit/*',
+                        'bee/password/edit',
+                        'bee/history',
+                        ]) ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->is([
+                            'bee',
+                            'bee/create',
+                            'bee/edit/*',
+                            'bee/password/edit',
+                            'bee/history',
+                            ]) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-box"></i>
                         <p>
                             Bee
@@ -77,13 +87,26 @@
                                 <p>Index</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('bee.create') }}"
-                                class="nav-link {{ request()->is('bee/create') ? 'active' : '' }}">
+                        @admin
+                        <li class="nav-item has-treeview {{ request()->is(['bee/history']) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ request()->is('bee/history') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Create</p>
+                                <p>
+                                        Package
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('bee.history.index') }}"
+                                        class="nav-link {{ request()->is('bee/history') ? 'active' : '' }}">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Index</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
+                        @endadmin
                     </ul>
                 </li>
                 <li class="nav-item">

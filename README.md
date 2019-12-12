@@ -14,19 +14,22 @@
 #### 1 = cancel
 #### 2 = bonus
 
-### status bee History
+### status bee
 #### 0 = Orders Accepted
 #### 1 = Order Came
 #### 2 = Order Processed
 #### 3 = Order Canceled
 #### 4 = Order Waiting Date
-#### 5 = Order Take
-#### 6 = Order Sell
+#### 5 = Pin Take By Username
+#### 6 = Not use
+#### 7 = Order Sell
 
 ### status bee History
-#### 0 = Not use
+#### 0 = Wait To Procuress
 #### 1 = Have By Username
 #### 2 = Sell
+#### 3 = Buy by Username
+#### 4 = Cancel
 
 ```shell
 php artisan migrate

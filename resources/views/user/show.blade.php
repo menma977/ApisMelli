@@ -101,11 +101,11 @@
     <div class="col-md-9">
         <div class="timeline">
             @foreach ($object as $item)
+            {{-- buy ledger --}}
+            @if ($item["ledger"])
             <div class="time-label">
                 <span class="bg-warning">{{ $item["date"] }}</span>
             </div>
-            {{-- buy ledger --}}
-            @if ($item["ledger"])
             <div>
                 <i class="fas fa-play bg-warning"></i>
                 <div class="timeline-item">
@@ -179,7 +179,12 @@
             @endif
             {{-- buy ledger --}}
             {{-- buy history --}}
-            @if ($item["buyHistory"])
+            @if ($item["buyHistory"]->count())
+            <div class="time-label">
+                <span class="bg-warning">{{ $item["date"] }}</span>
+            </div>
+            @foreach ($item["buyHistory"] as $itemBuyHistory)
+            @if ($itemBuyHistory->status != 4)
             <div>
                 <i class="fas fa-play bg-warning"></i>
                 <div class="timeline-item">
@@ -193,7 +198,7 @@
                                         code
                                     </th>
                                     <th style="width: 30%" class="text-center">
-                                        Tanggal Pembelian
+                                        Tanggal Pengiriman
                                     </th>
                                     <th style="width: 30%" class="text-center">
                                         Tanggal Pengambilan
@@ -207,16 +212,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($item["buyHistory"]->bee as $subItem)
+                                @foreach ($itemBuyHistory->bee as $subItem)
                                 <tr>
                                     <td class="text-center">
                                         {{ $subItem->code }}
                                     </td>
                                     <td class="text-center">
-                                        {{ Carbon\Carbon::parse($subItem->buy)->format("d/m/Y") }}
+                                        {{ $subItem->buy }}
                                     </td>
                                     <td class="text-center">
-                                        {{ Carbon\Carbon::parse($subItem->sell)->format("d/m/Y") }}
+                                        {{ $subItem->sell }}
                                     </td>
                                     <td class="project_progress">
                                         <div class="progress progress-sm">
@@ -251,6 +256,19 @@
                     </div>
                 </div>
             </div>
+            @else
+            <div>
+                <i class="fas fa-play bg-warning"></i>
+                <div class="timeline-item">
+                    <span class="time"><i class="fas fa-clock"></i> {{ $item["time"] }}</span>
+                    <div class="alert alert-danger alert-dismissible">
+                        <h5><i class="icon fas fa-ban"></i> Alert!</h5>
+                        Pembelian Anda Di Batalkan
+                    </div>
+                </div>
+            </div>
+            @endif
+            @endforeach
             @endif
             {{-- buy history --}}
             @endforeach

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\model\Bee;
+use App\model\BuyHistory;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,10 @@ class BeeController extends Controller
             $bee = Bee::where('user', Auth::user()->id)->get();
         }
         $bee->map(function ($item) {
-            $item->user_data = User::find($item->id);
+            $item->user_data = User::find($item->user);
+            if ($item->code) {
+                $item->send = User::find(BuyHistory::where('code', $item->code)->first()->send);
+            }
             return $item;
         });
 
