@@ -3,12 +3,12 @@
 @section('title')
 <div class="row mb-2">
     <div class="col-sm-6">
-        <h1>Home</h1>
+        <h1>Profile</h1>
     </div>
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Home</a></li>
-            <li class="breadcrumb-item active">User</li>
+            <li class="breadcrumb-item active">Profile</li>
         </ol>
     </div>
 </div>
@@ -88,7 +88,7 @@
                     {{ $user->number_address }}
                 </p>
                 <hr>
-                <strong><i class="fas fa-map-map mr-1"></i> No Rumah</strong>
+                <strong><i class="fas fa-map mr-1"></i> Deskirpsi Rumah</strong>
                 <p class="text-muted">
                     {{ $user->description_address }}
                 </p>

@@ -33,9 +33,9 @@
                     </a>
                 </li>
                 <li
-                    class="nav-item has-treeview {{ request()->is(['user', 'user/show', 'user/edit/*']) ? 'menu-open' : '' }}">
+                    class="nav-item has-treeview {{ request()->is(['user', 'user/show', 'user/edit/*', 'user/password/edit']) ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ request()->is(['user', 'user/show', 'user/edit/*']) ? 'active' : '' }}">
+                        class="nav-link {{ request()->is(['user', 'user/show', 'user/edit/*', 'user/password/edit']) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             Profile
@@ -51,9 +51,37 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="index.html" class="nav-link {{ request()->is('user/edit/*') ? 'active' : '' }}">
+                            <a href="{{ route('user.password.edit') }}"
+                                class="nav-link {{ request()->is('user/password/edit') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Password</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li
+                    class="nav-item has-treeview {{ request()->is(['bee', 'bee/create', 'bee/edit/*', 'bee/password/edit']) ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ request()->is(['bee', 'bee/create', 'bee/edit/*', 'bee/password/edit']) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-box"></i>
+                        <p>
+                            Bee
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('bee.index') }}"
+                                class="nav-link {{ request()->is('bee') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Index</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('bee.create') }}"
+                                class="nav-link {{ request()->is('bee/create') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create</p>
                             </a>
                         </li>
                     </ul>

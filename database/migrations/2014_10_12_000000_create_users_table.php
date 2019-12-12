@@ -32,6 +32,7 @@ class CreateUsersTable extends Migration
             $table->string('village')->nullable();
             $table->string('number_address');
             $table->text('description_address');
+            $table->integer('status')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

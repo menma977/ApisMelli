@@ -3,24 +3,30 @@
 
 ## install laravel/passport
 
-# type ledger
-## 0 = income
-## 1 = outcome
-## 2 = bonus
-## 3 = withdraw
+### type ledger
+#### 0 = income
+#### 1 = outcome
+#### 2 = bonus
+#### 3 = withdraw
 
-# status ledger
-## 0 = accept
-## 1 = cancel
-## 2 = bonus
+### status ledger
+#### 0 = accept
+#### 1 = cancel
+#### 2 = bonus
 
-# status bee
-## 0 = Orders Accepted
-## 1 = Order Came
-## 2 = Order Processed
-## 3 = Order Canceled
-## 4 = Order Waiting Date
-## 5 = Order Take
+### status bee History
+#### 0 = Orders Accepted
+#### 1 = Order Came
+#### 2 = Order Processed
+#### 3 = Order Canceled
+#### 4 = Order Waiting Date
+#### 5 = Order Take
+#### 6 = Order Sell
+
+### status bee History
+#### 0 = Not use
+#### 1 = Have By Username
+#### 2 = Sell
 
 ```shell
 php artisan migrate

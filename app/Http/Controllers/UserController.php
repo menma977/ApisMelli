@@ -13,10 +13,21 @@ use Carbon\Carbon;
 use DateInterval;
 use DatePeriod;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +35,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return view("user.password.edit");
     }
 
     /**
@@ -158,6 +169,41 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\model\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function editPassword()
+    {
+        return view("user.password.edit");
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\model\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(Request $request)
+    {
+        $this->validate($request, [
+            'password' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!Hash::check($value, Auth::user()->password)) {
+                    return $fail(__('The current password is incorrect.'));
+                }
+            }],
+            'passwordNew' => 'required|string|min:6|same:passwordNewConfirmation',
+        ]);
+        $user = User::find(Auth::user()->id);
+        $user->password = bcrypt($request->passwordNew);
+        $user->save();
+
+        return redirect("user/show");
     }
 
     /**

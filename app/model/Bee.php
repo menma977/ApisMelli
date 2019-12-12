@@ -8,6 +8,7 @@ class Bee extends Model
 {
     protected $fillable = [
         'pin',
+        'user',
         'code',
         'buy',
         'sell',

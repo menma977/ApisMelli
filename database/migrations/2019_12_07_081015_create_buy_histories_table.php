@@ -16,6 +16,7 @@ class CreateBuyHistoriesTable extends Migration
         Schema::create('buy_histories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user');
+            $table->integer('send');
             $table->string('code');
             $table->timestamps();
         });

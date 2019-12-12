@@ -9,10 +9,11 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
+| , 'middleware' => ['rule', 'auth']
  */
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,17 +34,21 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
     Route::get('/show', 'UserController@show')->name('show');
     Route::get('/edit/{id}', 'UserController@edit')->name('edit');
     Route::post('/update/{id}', 'UserController@update')->name('update');
-    Route::get('/delete/{id}', 'UserController@destroy')->name('delete');
+    Route::get('/delete/{id}', 'UserController@destroy')->name('delete')->middleware(['rule', 'auth']);
+    Route::group(['prefix' => 'password', 'as' => 'password.'], function () {
+        Route::get('/edit', 'UserController@editPassword')->name('edit');
+        Route::post('/update', 'UserController@updatePassword')->name('update');
+    });
 });
 
-Route::group(['prefix' => 'bee', 'as' => 'bee.', 'middleware' => ['rule', 'auth']], function () {
+Route::group(['prefix' => 'bee', 'as' => 'bee.'], function () {
     Route::get('/', 'BeeController@index')->name('index');
-    Route::get('/create', 'BeeController@create')->name('create');
-    Route::post('/store', 'BeeController@store')->name('store');
-    Route::get('/show', 'BeeController@show')->name('show');
-    Route::get('/edit/{id}', 'BeeController@edit')->name('edit');
-    Route::post('/update/{id}', 'BeeController@update')->name('update');
-    Route::get('/delete/{id}', 'BeeController@destroy')->name('delete');
+    Route::get('/create', 'BeeController@create')->name('create')->middleware(['rule', 'auth']);
+    Route::post('/store', 'BeeController@store')->name('store')->middleware(['rule', 'auth']);
+    Route::get('/show', 'BeeController@show')->name('show')->middleware(['rule', 'auth']);
+    Route::get('/edit/{id}', 'BeeController@edit')->name('edit')->middleware(['rule', 'auth']);
+    Route::post('/update/{id}', 'BeeController@update')->name('update')->middleware(['rule', 'auth']);
+    Route::get('/delete/{id}', 'BeeController@destroy')->name('delete')->middleware(['rule', 'auth']);
 });
 
 Route::group(['prefix' => 'ledger', 'as' => 'ledger.'], function () {

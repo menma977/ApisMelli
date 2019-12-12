@@ -33,6 +33,7 @@ class User extends Authenticatable
         'village',
         'number_address',
         'description_address',
+        'status',
     ];
 
     /**

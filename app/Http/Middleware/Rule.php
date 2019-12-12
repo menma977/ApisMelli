@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class Rule
 {
@@ -15,7 +16,7 @@ class Rule
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->user()->status == 1) {
+        if (Auth::user()->rule == 1) {
             return abort(404);
         }
 

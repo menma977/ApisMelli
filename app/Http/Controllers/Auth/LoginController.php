@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Request;
 
 class LoginController extends Controller
 {
@@ -66,5 +69,28 @@ class LoginController extends Controller
     public function username()
     {
         return $this->username;
+    }
+
+    protected function credentials(Request $request)
+    {
+        return array_merge($request->only($this->username(), 'password'), ['status' => 1]);
+    }
+
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        $errors = [$this->username() => trans('auth.failed')];
+        // Load user from database
+        $user = User::where($this->username(), $request->{$this->username()})->first();
+
+        // Check if user was successfully loaded, that the password matches
+        // and active is not 1. If so, override the default error message.
+        if ($user && Hash::check($request->password, $user->password) && $user->status != 1) {
+            $errors = [$this->username() => trans('Your Account has been suspended. please contact admin')];
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json($errors, 422);
+        }
+        return redirect()->back()->withInput($request->only($this->username(), 'remember'))->withErrors($errors);
     }
 }

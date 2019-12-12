@@ -29,6 +29,7 @@ class UsersTableSeeder extends Seeder
             'village' => '',
             'number_address' => '',
             'description_address' => '',
+            'status' => 1,
         ]);
     }
 }
