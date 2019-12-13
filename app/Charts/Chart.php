@@ -4,7 +4,7 @@ namespace App\Charts;
 
 use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 
-class ChartModel extends Chart
+class Chart extends Chart
 {
     /**
      * Initializes the chart.

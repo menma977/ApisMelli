@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBuyHistoriesTable extends Migration
+class CreateDistrictsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,8 @@ class CreateBuyHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('buy_histories', function (Blueprint $table) {
+        Schema::create('districts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user');
-            $table->integer('send')->nullable();
-            $table->string('code');
-            $table->integer('count');
-            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }
@@ -31,6 +26,6 @@ class CreateBuyHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('buy_histories');
+        Schema::dropIfExists('districts');
     }
 }

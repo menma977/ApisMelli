@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubDistrictsTable extends Migration
+class CreateLedgersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,14 @@ class CreateSubDistrictsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sub_districts', function (Blueprint $table) {
+        Schema::create('ledgers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('code');
-            $table->text('name');
+            $table->text('description');
+            $table->string('debit')->default(0);
+            $table->string('credit')->default(0);
+            $table->string('user ');
+            $table->integer('ledger_type')->default(0);
             $table->timestamps();
         });
     }
@@ -28,6 +32,6 @@ class CreateSubDistrictsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_districts');
+        Schema::dropIfExists('ledgers');
     }
 }

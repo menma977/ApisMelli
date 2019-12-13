@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,16 +14,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('login', 'UserController@login')->name('login');
-Route::post('signup', 'UserController@signup')->name('signup');
-
-Route::middleware('auth:api')->group(function () {
-    Route::get('user', 'UserController@user')->name('user');
-
-    Route::group(['prefix' => 'pulse', 'as' => 'pulse'], function () {
-        Route::post('validation', 'HlrController@validation')->name('validation');
-        Route::post('payment', 'HlrController@payment')->name('payment');
-    });
-
-    Route::get('logout', 'UserController@logout')->name('logout');
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
 });

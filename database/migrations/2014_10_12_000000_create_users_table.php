@@ -15,22 +15,22 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('rule')->default(1);
             $table->string('name');
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('rule')->default(1);
             $table->string('password');
             $table->string('phone')->unique();
-            $table->string('id_identity_card')->unique();
-            $table->string('identity_card_image');
-            $table->string('identity_card_image_salve');
-            $table->string('image');
+            $table->text('id_identity_card')->unique();
+            $table->text('identity_card_image');
+            $table->text('identity_card_image_salve');
+            $table->text('image');
             $table->integer('province');
             $table->integer('district');
             $table->integer('sub_district');
-            $table->string('village')->nullable();
-            $table->string('number_address');
+            $table->text('village');
+            $table->integer('number_address');
             $table->text('description_address');
             $table->integer('status')->default(1);
             $table->rememberToken();

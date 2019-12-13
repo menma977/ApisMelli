@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class Rule
+class Member
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,9 @@ class Rule
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->rule == 1) {
+        if (Auth::user()->rule != 1) {
             return abort(404);
         }
-
         return $next($request);
     }
 }

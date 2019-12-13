@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBinariesTable extends Migration
+class CreateSubDistrictsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateBinariesTable extends Migration
      */
     public function up()
     {
-        Schema::create('binaries', function (Blueprint $table) {
+        Schema::create('sub_districts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('sponsor');
-            $table->integer('user_id');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ class CreateBinariesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('binaries');
+        Schema::dropIfExists('sub_districts');
     }
 }

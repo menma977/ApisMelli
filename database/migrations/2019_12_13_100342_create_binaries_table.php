@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBeesTable extends Migration
+class CreateBinariesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateBeesTable extends Migration
      */
     public function up()
     {
-        Schema::create('bees', function (Blueprint $table) {
+        Schema::create('binaries', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user')->nullable();
-            $table->string('pin');
-            $table->string('code')->nullable();
-            $table->date('buy')->nullable();
-            $table->date('sell')->nullable();
-            $table->integer('status')->default(6);
+            $table->integer('sponsor')->nullable();
+            $table->string('user')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ class CreateBeesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bees');
+        Schema::dropIfExists('binaries');
     }
 }
