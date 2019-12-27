@@ -2,9 +2,9 @@
 
 namespace App\Charts;
 
-use ConsoleTVs\Charts\Classes\Chartjs\Chart;
+use ConsoleTVs\Charts\Classes\Chartjs\Chart as ChartsChart;
 
-class Chart extends Chart
+class Chart extends ChartsChart
 {
     /**
      * Initializes the chart.

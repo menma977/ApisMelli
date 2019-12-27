@@ -15,6 +15,8 @@ class CreateSubDistrictsTable extends Migration
     {
         Schema::create('sub_districts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('code');
+            $table->text('name');
             $table->timestamps();
         });
     }

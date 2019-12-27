@@ -19,7 +19,7 @@ class CreateLedgersTable extends Migration
             $table->text('description');
             $table->string('debit')->default(0);
             $table->string('credit')->default(0);
-            $table->string('user ');
+            $table->string('user');
             $table->integer('ledger_type')->default(0);
             $table->timestamps();
         });

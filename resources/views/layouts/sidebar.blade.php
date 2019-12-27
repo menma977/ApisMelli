@@ -25,14 +25,14 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="{{ route('home.index') }}" class="nav-link {{ request()->is('home') ? 'active' : '' }}">
+                    <a href="{{ route('home') }}" class="nav-link {{ request()->is('home') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Home
                         </p>
                     </a>
                 </li>
-                <li
+                {{-- <li
                     class="nav-item has-treeview {{ request()->is(['user', 'user/show', 'user/edit/*', 'user/password/edit']) ? 'menu-open' : '' }}">
                     <a href="#"
                         class="nav-link {{ request()->is(['user', 'user/show', 'user/edit/*', 'user/password/edit']) ? 'active' : '' }}">
@@ -118,7 +118,7 @@
                             Logout
                         </p>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

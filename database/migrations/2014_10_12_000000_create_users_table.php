@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone')->unique();
-            $table->text('id_identity_card')->unique();
+            $table->string('id_identity_card')->unique();
             $table->text('identity_card_image');
             $table->text('identity_card_image_salve');
             $table->text('image');

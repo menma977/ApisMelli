@@ -1,5 +1,26 @@
 @extends('layouts.login')
 
+@section('endCSS')
+<!-- Select2 -->
+<link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+@endsection
+
+@section('endJS')
+<!-- bs-custom-file-input -->
+<script src="{{ asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+<!-- Select2 -->
+<script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+<script>
+    $(function() {
+        $('#province').select2();
+        $('#district').select2();
+        $('#subDistrict').select2();
+        bsCustomFileInput.init();
+    });
+</script>
+@endsection
+
 @section('content')
 <div class="login-logo">
     <a href="{{ url('/') }}"><b>Admin</b>LTE</a>
@@ -8,7 +29,7 @@
 <div class="card">
     <div class="card-body login-card-body">
         <p class="login-box-msg">Register a new membership</p>
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
             @csrf
             <div class="input-group mb-3">
                 <input id="username" type="text" class="form-control @error('username') is-invalid @enderror"
@@ -73,16 +94,58 @@
                 @enderror
             </div>
 
-            <div class="row">
-                <div class="col-8">
-                    <a href="{{ route('login') }}">back</a>
+            <div class="input-group mp-3">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="ktp" name="ktp">
+                    <label class="custom-file-label" for="ktp">Upload KTP</label>
                 </div>
-                <!-- /.col -->
-                <div class="col-4">
-                    <button type="submit" class="btn btn-warning btn-block">Register</button>
-                </div>
-                <!-- /.col -->
             </div>
+
+            <div class="input-group mb-3">
+                <label>Province</label>
+                <select id="province" name="province" class="form-control select2" style="width: 100%;" required>
+                    @foreach (App\model\Province::all() as $item)
+                    <option value="{{ $item->code }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+                @error('province')
+                <span class="text-danger" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <div class="input-group mb-3">
+                <label>District</label>
+                <select id="district" name="district" class="form-control select2" style="width: 100%;" required>
+                    @foreach (App\model\District::all() as $item)
+                    <option value="{{ $item->code }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+                @error('district')
+                <span class="text-danger" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <div class="input-group mb-3">
+                <label>Sub District</label>
+                <select id="subDistrict" name="subDistrict" class="form-control select2" style="width: 100%;" required>
+                    @foreach (App\model\SubDistrict::all() as $item)
+                    <option value="{{ $item->code }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+                @error('district')
+                <span class="text-danger" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <hr>
+            <button type="submit" class="btn btn-warning">Register</button>
+            <a href="{{ route('login') }}" class="btn btn-default float-right">Back</a>
         </form>
     </div>
     <!-- /.login-card-body -->
