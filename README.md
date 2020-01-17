@@ -1,5 +1,7 @@
 # APISMELLI Installation
 
+- Register = 2.000.000
+- Bonus Sponsor = 2%
 
 ## install laravel/passport
 

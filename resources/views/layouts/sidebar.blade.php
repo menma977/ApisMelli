@@ -1,9 +1,10 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar elevation-4 sidebar-light-warning">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link navbar-warning">
+    <a href="{{ route('home') }}"
+       class="brand-link navbar-warning">
         <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="Apis Melli" class="brand-image img-circle elevation-3"
-            style="opacity: .8">
+             style="opacity: .8">
         <span class="brand-text font-weight-light">Apis Melli</span>
     </a>
 
@@ -12,11 +13,14 @@
         <!-- Sidebar user (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ Auth::user()->image ? asset('dist/img/'.Auth::user()->image) : asset('dist/img/user2-160x160.jpg') }}"
+                <img
+                    src="{{ \Illuminate\Support\Facades\Auth::user()->image ? asset('dist/img/'.\Illuminate\Support\Facades\Auth::user()->image) : asset('dist/img/user2-160x160.jpg') }}"
                     class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="{{ route('user.show') }}" class="d-block">{{ Auth::user()->name }}</a>
+                <a href="{{ route('user.show', base64_encode(\Illuminate\Support\Facades\Auth::user()->id)) }}" class="d-block">
+                    {{ \Illuminate\Support\Facades\Auth::user()->name }}
+                </a>
             </div>
         </div>
 
@@ -29,6 +33,14 @@
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Home
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('bee.index') }}" class="nav-link {{ request()->is('bee/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-box-open"></i>
+                        <p>
+                            Stup
                         </p>
                     </a>
                 </li>

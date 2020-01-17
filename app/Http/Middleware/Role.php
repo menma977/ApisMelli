@@ -3,9 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
 
-class Member
+class Role
 {
     /**
      * Handle an incoming request.
@@ -16,9 +15,6 @@ class Member
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->rule != 1) {
-            return abort(404);
-        }
         return $next($request);
     }
 }

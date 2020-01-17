@@ -15,9 +15,11 @@ class CreateBeesTable extends Migration
     {
         Schema::create('bees', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('user');
+            $table->string('user')->nullable();
             $table->string('qr')->unique();
             $table->string('code');
+            $table->string('start')->nullable();
+            $table->string('end')->nullable();
             $table->timestamps();
         });
     }

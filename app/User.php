@@ -6,6 +6,28 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
+/**
+ * Class User
+ * @package App
+ * @property int rule
+ * @property string name
+ * @property string username
+ * @property string email
+ * @property string password
+ * @property string phone
+ * @property int id_identity_card
+ * @property string identity_card_image
+ * @property string identity_card_image_salve
+ * @property string image
+ * @property int province
+ * @property int district
+ * @property int sub_district
+ * @property string village
+ * @property int number_address
+ * @property string description_address
+ * @property int status
+ * @method static find(false|string $id)
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
@@ -21,7 +43,6 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
-        'phone',
         'phone',
         'id_identity_card',
         'identity_card_image',
@@ -42,7 +63,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'id', 'password', 'remember_token',
     ];
 
     /**
