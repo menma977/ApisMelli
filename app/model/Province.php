@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @package App\model
  * @property string code
  * @property string name
+ * @method static where(string $string, $id)
  */
 class Province extends Model
 {

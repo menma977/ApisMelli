@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int user
  * @property string qr
  * @property string code
+ * @property string start
+ * @property string end
+ * @method static where(string $string, $id)
  */
 class Bee extends Model
 {
@@ -17,5 +20,7 @@ class Bee extends Model
         'user',
         'qr',
         'code',
+        'start',
+        'end',
     ];
 }

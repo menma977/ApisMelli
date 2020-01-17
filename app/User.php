@@ -9,7 +9,7 @@ use Laravel\Passport\HasApiTokens;
 /**
  * Class User
  * @package App
- * @property int rule
+ * @property int role
  * @property string name
  * @property string username
  * @property string email
@@ -26,6 +26,7 @@ use Laravel\Passport\HasApiTokens;
  * @property int number_address
  * @property string description_address
  * @property int status
+ * @method static where(string $string, $id)
  * @method static find(false|string $id)
  */
 class User extends Authenticatable
@@ -38,7 +39,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'rule',
+        'role',
         'name',
         'username',
         'email',

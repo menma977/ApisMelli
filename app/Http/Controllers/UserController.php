@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\model\Bee;
 use App\model\Binary;
+use App\model\District;
 use App\model\Ledger;
+use App\model\Province;
+use App\model\SubDistrict;
 use App\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
@@ -15,6 +19,16 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -69,20 +83,6 @@ class UserController extends Controller
             'description_address' => 'required',
         ]);
 
-        $ledgerAdmin = new Ledger();
-        $ledgerAdmin->code = 'REG' . date("YmdHis");
-        $ledgerAdmin->credit = 2000000;
-        $ledgerAdmin->description = 'Pendaftaran User : Rp' . $ledgerAdmin->credit;
-        $ledgerAdmin->user = Auth::user()->id;
-        $ledgerAdmin->ledger_type = 0;
-
-        $ledger = new Ledger();
-        $ledger->code = 'REGBON' . date("YmdHis");
-        $ledger->credit = (2 / 100) * $ledgerAdmin->credit; // 2% from ledgerAdmin
-        $ledger->description = 'anda mendapatkan bonus 2% dari pendaftaran sebesar : Rp' . $ledger->credit;
-        $ledger->user = Auth::user()->id;
-        $ledger->ledger_type = 2;
-
         $user = new User();
         $user->name = $request->name;
         $user->username = $request->username;
@@ -100,8 +100,6 @@ class UserController extends Controller
         $user->number_address = $request->number_address;
         $user->description_address = $request->description_address;
 
-        $ledgerAdmin->save();
-        $ledger->save();
         $user->save();
         $binary = new Binary();
         $binary->sponsor = Auth::user()->id;
@@ -115,15 +113,32 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return Response
+     * @return Factory|View
      */
     public function show($id)
     {
         $id = base64_decode($id);
         $user = User::find($id);
-        $binary = Binary::where('user', $user->id)->frist();
-        $sponsor = User::find($binary->sponsor);
+        $user->province = Province::find($user->province);
+        $user->district = District::find($user->district);
+        $user->sub_district = SubDistrict::find($user->sub_district);
+        $binary = Binary::where('user', $user->id)->first();
+        if ($user->role == 0) {
+            $sponsor = User::find(1);
+        } else {
+            $sponsor = User::find($binary->sponsor);
+        }
         $ledger = Ledger::where('user', $user->id)->get();
+        $bee = Bee::where('user', $user->id)->take(100)->orderBy('start', 'desc')->get()->groupBy('start');
+
+        $data = [
+            'user' => $user,
+            'sponsor' => $sponsor,
+            'ledger' => $ledger,
+            'bee' => $bee,
+        ];
+
+        return \view('user.show', $data);
     }
 
     /**
