@@ -18,7 +18,8 @@
                     class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="{{ route('user.show', base64_encode(\Illuminate\Support\Facades\Auth::user()->id)) }}" class="d-block">
+                <a href="{{ route('user.show', base64_encode(\Illuminate\Support\Facades\Auth::user()->id)) }}"
+                   class="d-block">
                     {{ \Illuminate\Support\Facades\Auth::user()->name }}
                 </a>
             </div>
@@ -37,10 +38,41 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('bee.index') }}" class="nav-link {{ request()->is('bee/*') ? 'active' : '' }}">
+                    <a href="{{ route('bee.index') }}"
+                       class="nav-link {{ request()->is(['bee', 'bee/*']) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-box-open"></i>
                         <p>
                             Stup
+                            @if($countStup)
+                                <span class="badge badge-success right">{{ $countStup }}</span>
+                            @endif
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('ledger.index') }}"
+                       class="nav-link {{ request()->is(['ledger', 'ledger/*']) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-book-open"></i>
+                        <p>
+                            Ledger
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('withdraw.index') }}"
+                       class="nav-link {{ request()->is(['withdraw', 'withdraw/*']) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-cash-register"></i>
+                        <p>
+                            Withdraw
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('binary.index') }}"
+                       class="nav-link {{ request()->is(['binary', 'binary/*']) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-network-wired"></i>
+                        <p>
+                            Binary
                         </p>
                     </a>
                 </li>

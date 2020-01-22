@@ -13,9 +13,15 @@
 </head>
 <body>
 
-<div class="visible-print text-center">
+<div class="visible-print row">
 
-    <img src="data:image/png;base64, {!! base64_encode($qr) !!} ">
+    @foreach($bee as $item)
+        <div class="col-md-3 text-center">
+            <img src="data:image/png;base64, {!! base64_encode($item->BarCode) !!} ">
+            <h5>{{ $item->code }}</h5>
+            <small>{{ URL::to('/') }}</small>
+        </div>
+    @endforeach
 
 </div>
 

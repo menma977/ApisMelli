@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/user/referral/{username}', 'ConfigController@Referral')->name('ref');
+Route::group(['prefix' => 'referral', 'as' => 'referral.'], function () {
+    Route::get('/{username}', 'ConfigController@index')->name('index');
+    Route::post('/store', 'ConfigController@store')->name('store');
+    Route::get('/show/{id}', 'ConfigController@show')->name('show');
+    Route::post('/update', 'ConfigController@update')->name('update');
+    Route::get('/delete/{id}', 'ConfigController@destroy')->name('delete');
+});
 
 Auth::routes(['register' => false]);
 
@@ -39,11 +44,30 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
 
 Route::group(['prefix' => 'bee', 'as' => 'bee.'], function () {
     Route::get('/', 'BeeController@index')->name('index')->middleware('auth', 'role:0');
-    Route::get('/create', 'BeeController@create')->name('create')->middleware('auth', 'role:0');
     Route::post('/store', 'BeeController@store')->name('store')->middleware('auth', 'role:0');
     Route::get('/show/{id}', 'BeeController@show')->name('show')->middleware('auth', 'role:0');
-    Route::get('/edit/{id}', 'BeeController@edit')->name('edit')->middleware('auth', 'role:0');
-    Route::post('/update/{id}', 'BeeController@update')->name('update')->middleware('auth', 'role:0');
+    Route::get('/{id}/update/{status}', 'BeeController@update')->name('update')->middleware('auth', 'role:0');
     Route::get('/delete/{id}', 'BeeController@destroy')->name('delete')->middleware('auth', 'role:0');
+    Route::post('/qr', 'BeeController@QRCodeList')->name('QRCodeList')->middleware('auth', 'role:0');
     Route::get('/qr/{id}', 'BeeController@QRCode')->name('QRCode')->middleware('auth', 'role:0');
+});
+
+Route::group(['prefix' => 'ledger', 'as' => 'ledger.'], function () {
+    Route::get('/', 'LedgerController@index')->name('index')->middleware('auth', 'role:0|1');
+    Route::get('/create', 'LedgerController@create')->name('create')->middleware('auth', 'role:0|1');
+    Route::post('/store', 'LedgerController@store')->name('store')->middleware('auth', 'role:0|1');
+    Route::get('/show/{id}', 'LedgerController@show')->name('show')->middleware('auth', 'role:0|1');
+    Route::get('/edit/{id}', 'LedgerController@edit')->name('edit')->middleware('auth', 'role:0|1');
+    Route::post('/update/{id}', 'LedgerController@update')->name('update')->middleware('auth', 'role:0|1');
+    Route::get('/delete/{id}', 'LedgerController@destroy')->name('delete')->middleware('auth', 'role:0');
+});
+
+Route::group(['prefix' => 'withdraw', 'as' => 'withdraw.'], function () {
+    Route::get('/', 'WithdrawController@index')->name('index')->middleware('auth', 'role:0|1');
+    Route::get('/{id}/update/{status}', 'WithdrawController@update')->name('update')->middleware('auth', 'role:0');
+});
+
+Route::group(['prefix' => 'binary', 'as' => 'binary.'], function () {
+    Route::get('/', 'BinaryController@index')->name('index')->middleware('auth', 'role:0|1');
+    Route::get('/find/{id}', 'BinaryController@show')->name('show')->middleware('auth', 'role:0|1');
 });

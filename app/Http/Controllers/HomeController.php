@@ -1,7 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Charts\Chart;
+use App\model\Bee;
+use App\model\Ledger;
+use Carbon\Carbon;
+use Illuminate\Contracts\Support\Renderable;
 
 class HomeController extends Controller
 {
@@ -29,9 +34,13 @@ class HomeController extends Controller
         }
         $getOldPercent = $old * $countOld / 100;
         $getNewPercent = $new * $countNew / 100;
-        $total = (($new - $old) / $countNew) / 100;
+        if ($new) {
+            $total = (($new - $old) / $countNew) / 100;
+        } else {
+            $total = 0;
+        }
 
-        if ($getOldPercent > $getNewPercent) {
+        if ($getOldPercent < $getNewPercent) {
             return $data = ["text" => 'text-success', "icon" => 'fas fa-caret-up', "percent" => $total];
         } else if ($getOldPercent == $getNewPercent) {
             return $data = ["text" => 'text-warning', "icon" => 'fas fa-caret-left', "percent" => $total];
@@ -43,33 +52,83 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function index()
     {
-        $mount = ['January', 'February', 'Mart', 'April', 'Mei', 'June', 'July', 'Augustus', 'September', 'October', 'November', 'December'];
+        $month = Bee::where('user', '!=', null)->get()->groupBy(function ($item) {
+            return Carbon::parse($item->start)->format('m');
+        });
+        $mount = array();
+        foreach ($month as $id => $item) {
+            array_push($mount, $this->convertMonth($id));
+        }
 
-        $countBeeOld = [5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000];
-        $incomeOld = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000];
-        $outcomeOld = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000];
+        //income
+        $incomeOld = array();
+        $ledgerOld = Ledger::whereYear('created_at', (Carbon::now()->format('Y') - 1))->get()->groupBy(function ($item) {
+            return Carbon::parse($item->created_at)->format('m');
+        });
+        foreach ($ledgerOld as $id => $item) {
+            $countDebit = 0;
+            foreach ($item->whereIn('ledger_type', [0, 2]) as $subId => $subItem) {
+                $countDebit += $subItem->credit;
+            }
+            array_push($incomeOld, $countDebit);
+        }
 
-        $countBee = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000];
-        $income = [12000, 11000, 10000, 9000, 8000, 7000, 6000, 5000, 4000, 3000, 2000, 1000];
-        $outcome = [5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000];
+        $income = array();
+        $ledger = Ledger::whereYear('created_at', Carbon::now()->format('Y'))->get()->groupBy(function ($item) {
+            return Carbon::parse($item->created_at)->format('m');
+        });
+        foreach ($ledger as $id => $item) {
+            $countCredit = 0;
+            foreach ($item->whereIn('ledger_type', [0, 2]) as $subId => $subItem) {
+                $countCredit += $subItem->credit;
+            }
+            array_push($income, $countCredit);
+        }
 
+        //outcome
+        $outcomeOld = array();
+        foreach ($ledgerOld as $id => $item) {
+            $countDebit = 0;
+            foreach ($item->whereIn('ledger_type', [1, 3]) as $subId => $subItem) {
+                $countDebit += $subItem->debit + $subItem->credit;
+            }
+            array_push($outcomeOld, $countDebit);
+        }
+
+        $outcome = array();
+        foreach ($ledger as $id => $item) {
+            $countCredit = 0;
+            foreach ($item->whereIn('ledger_type', [1, 3]) as $subId => $subItem) {
+                $countCredit += $subItem->debit + $subItem->credit;
+            }
+            array_push($outcome, $countCredit);
+        }
 
         $chartData = new Chart;
         $chartData->labels($mount);
-        $chartData->dataset('Jumlah Kandang Terjual', 'line', $countBee)->color("rgba(241,216,67,1)")->backgroundcolor("rgba(241,216,67,1)")->fill(false)->linetension(0.1);
         $chartData->dataset('Pemasukan', 'line', $income)->color("rgba(66,165,214,1)")->backgroundcolor("rgba(66,165,214,1)")->fill(false)->linetension(0.1);
         $chartData->dataset('Pengeluaran', 'line', $outcome)->color("rgba(214,79,66,1)")->backgroundcolor("rgba(214,79,66,1)")->fill(false)->linetension(0.1);
 
         $data = [
             'chart' => $chartData,
-            'countBee' => $this->arrayData($countBeeOld, $countBee),
             'income' => $this->arrayData($incomeOld, $income),
             'outcome' => $this->arrayData($outcomeOld, $outcome),
+            'CountBee' => Bee::whereYear('start', Carbon::now()->format('Y'))->where('user', '!=', null)->count() * 2000000,
+            'CountIncome' => Ledger::whereYear('created_at', Carbon::now()->format('Y'))->whereIn('ledger_type', [0, 2])->sum('credit'),
+            'CountOutcome' => Ledger::whereYear('created_at', Carbon::now()->format('Y'))->whereIn('ledger_type', [1, 3])->sum('debit')
+                + Ledger::whereYear('created_at', Carbon::now()->format('Y'))->whereIn('ledger_type', [1, 3])->sum('credit'),
         ];
+
         return view('home', $data);
+    }
+
+    private function convertMonth($month)
+    {
+        $raw = ['January', 'February', 'Mart', 'April', 'Mei', 'June', 'July', 'Augustus', 'September', 'October', 'November', 'December'];
+        return $raw[str_replace('0', '', $month)];
     }
 }

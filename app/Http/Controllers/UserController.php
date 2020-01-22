@@ -9,6 +9,7 @@ use App\model\Ledger;
 use App\model\Province;
 use App\model\SubDistrict;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -129,7 +130,9 @@ class UserController extends Controller
             $sponsor = User::find($binary->sponsor);
         }
         $ledger = Ledger::where('user', $user->id)->get();
-        $bee = Bee::where('user', $user->id)->take(100)->orderBy('start', 'desc')->get()->groupBy('start');
+        $bee = Bee::where('user', $user->id)->take(100)->orderBy('start', 'desc')->get()->groupBy(function ($item) {
+            return Carbon::parse($item->start)->format('Y-m');
+        });
 
         $data = [
             'user' => $user,

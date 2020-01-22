@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\model\Ledger;
-use Illuminate\Http\Request;
+use App\User;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\View\View;
 
 class LedgerController extends Controller
 {
@@ -20,76 +22,19 @@ class LedgerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function index()
     {
-        //
-    }
+        $ledger = Ledger::orderBy('id', 'desc')->get();
+        $ledger->map(function ($item) {
+            $item->user = User::find($item->user);
+        });
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        $data = [
+            'ledger' => $ledger
+        ];
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\model\Ledger  $ledger
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Ledger $ledger)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\model\Ledger  $ledger
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Ledger $ledger)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\model\Ledger  $ledger
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Ledger $ledger)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\model\Ledger  $ledger
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Ledger $ledger)
-    {
-        //
+        return view('ledger.index', $data);
     }
 }

@@ -12,25 +12,38 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
  */
-
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 
-Route::post('login', 'Api\UserController@login');
-Route::get('boot/login/{id}/{apiToken}/{routeTarget}', 'Api\UserController@AutoLogin');
-Route::post('register', 'Api\UserController@register');
-Route::post('upload/image/user', 'Api\UserController@uploadImage');
-Route::post('user/upload/image/ktp', 'Api\UserController@uploadImageKTP');
+Route::post('login', 'Api\ConfigController@login');
+Route::post('register', 'Api\ConfigController@register');
 
-Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
-    Route::get('/store', 'BeeController@store')->name('store');
+Route::group(['prefix' => 'cron', 'as' => 'cron.'], function () {
+    Route::get('run', 'Api\CronJobController@run')->name('run');
 });
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('user/profile', 'Api\UserController@profile');
-    Route::get('user/bank', 'Api\UserController@bank');
-    Route::post('user/update', 'Api\UserController@update');
-    Route::post('user/update/image', 'Api\UserController@updateImage');
-    Route::post('user/upload/payment', 'Api\UserController@uploadPayment');
+
+    Route::get('verification', 'Api\ConfigController@verification');
+
+    Route::get('logout', 'Api\ConfigController@logout');
+
+    Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
+        Route::get('show', 'Api\ConfigController@show')->name('show');
+        Route::get('balance', 'Api\ConfigController@balance')->name('balance');
+        Route::post('update', 'Api\ConfigController@update')->name('update');
+        Route::post('update/profile/image', 'Api\ConfigController@updateProfile')->name('updateProfile');
+        Route::post('update/profile/data', 'Api\ConfigController@updateData')->name('updateData');
+    });
+
+    Route::group(['prefix' => 'withdraw', 'as' => 'withdraw.'], function () {
+        Route::post('show', 'Api\ConfigController@withdrawValidate')->name('show');
+        Route::post('store', 'Api\ConfigController@withdraw')->name('store');
+    });
+
+    Route::group(['prefix' => 'stup', 'as' => 'stup.'], function () {
+        Route::post('show', 'Api\ConfigController@checkSetup')->name('show');
+        Route::post('store', 'Api\ConfigController@requestStup')->name('store');
+    });
 });

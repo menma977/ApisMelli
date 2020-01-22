@@ -50,13 +50,6 @@
 @section('content')
 <div class="row">
     <div class="col-md-12">
-        <div id="copy" class="btn btn-block callout callout-success swalDefaultSuccess">
-            <h5>Refreal</h5>
-            <p id="massage">{{ route('ref', Auth::user()->username) }}</p>
-            <p><small>Tekan untuk Mengcopi refreal</small></p>
-        </div>
-    </div>
-    <div class="col-md-12">
         <div class="card card-warning card-outline">
             <div class="card-header">
                 <h3 class="card-title">Data Pertahun</h3>
@@ -69,40 +62,25 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <div class="col-sm-4 col-4">
-                        <div class="description-block border-right">
-                            <span class="description-percentage {{ $countBee["text"] }}">
-                                <i class="{{ $countBee["icon"] }}"></i>
-                                {{ $countBee["percent"] }}%
-                            </span>
-                            <h5 class="description-header">$35,210.43</h5>
-                            <span class="description-text">Jumlah Kandang Terjual</span>
-                        </div>
-                        <!-- /.description-block -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-sm-4 col-4">
+                    <div class="col-sm-6 col-6">
                         <div class="description-block border-right">
                             <span class="description-percentage {{ $income["text"] }}">
                                 <i class="{{ $income["icon"] }}"></i>
                                 {{ $income["percent"] }}%
                             </span>
-                            <h5 class="description-header">$10,390.90</h5>
+                            <h5 class="description-header">Rp {{ number_format($CountIncome, 0, ',', '.') }}</h5>
                             <span class="description-text">Pemasukan</span>
                         </div>
-                        <!-- /.description-block -->
                     </div>
-                    <!-- /.col -->
-                    <div class="col-sm-4 col-4">
+                    <div class="col-sm-6 col-6">
                         <div class="description-block">
                             <span class="description-percentage {{ $outcome["text"] }}">
                                 <i class="{{ $outcome["icon"] }}"></i>
                                 {{ $outcome["percent"] }}%
                             </span>
-                            <h5 class="description-header">1200</h5>
+                            <h5 class="description-header">Rp {{ number_format($CountOutcome, 0, ',', '.') }}</h5>
                             <span class="description-text">Pengeluaran</span>
                         </div>
-                        <!-- /.description-block -->
                     </div>
                 </div>
             </div>

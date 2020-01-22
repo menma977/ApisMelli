@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string code
  * @property string start
  * @property string end
- * @method static where(string $string, $id)
  */
 class Bee extends Model
 {

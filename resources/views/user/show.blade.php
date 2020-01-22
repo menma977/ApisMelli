@@ -164,8 +164,8 @@
                                         <tr>
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $stopList->code }}</td>
-                                            <td>{{ $stopList->start }}</td>
-                                            <td>{{ $stopList->end }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($stopList->start)->format('d-m-Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($stopList->end)->format('d-m-Y') }}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>

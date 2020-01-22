@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\model\Binary;
-use Illuminate\Http\Request;
+use App\User;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class BinaryController extends Controller
 {
@@ -20,76 +24,35 @@ class BinaryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function index()
     {
-        //
-    }
+        $binary = Binary::where('sponsor', Auth::user()->id)->get();
+        $binary->map(function ($item) {
+            $item->userDownLine = User::find($item->user);
+        });
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        $data = [
+            'binary' => $binary
+        ];
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return view('binary.index', $data);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\model\Binary  $binary
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return JsonResponse
      */
-    public function show(Binary $binary)
+    public function show($id)
     {
-        //
-    }
+        $binary = Binary::where('sponsor', $id)->get();
+        $binary->map(function ($item) {
+            $item->userDownLine = User::find($item->user);
+        });
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\model\Binary  $binary
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Binary $binary)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\model\Binary  $binary
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Binary $binary)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\model\Binary  $binary
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Binary $binary)
-    {
-        //
+        return $binary;
     }
 }

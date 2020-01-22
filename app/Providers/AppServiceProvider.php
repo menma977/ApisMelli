@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Model\Stup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
@@ -26,6 +27,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        view()->composer('layouts.sidebar', function ($view) {
+            $stup = Stup::where('status', 0)->count();
+            $view->with('countStup', $stup);
+        });
+
         Blade::if('admin', function () {
             return Auth::user() && Auth::user()->rule == 0 ? true : false;
         });
