@@ -71,3 +71,8 @@ Route::group(['prefix' => 'binary', 'as' => 'binary.'], function () {
     Route::get('/', 'BinaryController@index')->name('index')->middleware('auth', 'role:0|1');
     Route::get('/find/{id}', 'BinaryController@show')->name('show')->middleware('auth', 'role:0|1');
 });
+
+Route::group(['prefix' => 'config', 'as' => 'config.'], function () {
+    Route::get('/', 'HomeController@isOnlineStatus')->name('isOnlineStatus')->middleware('auth', 'role:0|1');
+    Route::get('/auth', 'HomeController@authOnline')->name('authOnline')->middleware('auth', 'role:0|1');
+});

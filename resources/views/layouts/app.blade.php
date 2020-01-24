@@ -25,7 +25,7 @@
     @yield('endCSS')
 </head>
 {{--sidebar-collapse--}}
-<body class="hold-transition sidebar-mini">
+<body class="sidebar-mini layout-fixed accent-warning" style="height: auto;">
 <!-- Site wrapper -->
 <div class="wrapper">
 
@@ -86,6 +86,32 @@
 <!-- ChartJS -->
 <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
 @yield('endJS')
+
+<script>
+    $(function () {
+        fetch('{{ route('config.authOnline') }}').then((response) => {
+            return response.json();
+        }).then((json) => {
+            if (json.response) {
+                $("#online").addClass("text-success");
+            } else {
+                $("#online").removeClass("text-success");
+            }
+        });
+
+        setInterval(function () {
+            fetch('{{ route('config.authOnline') }}').then((response) => {
+                return response.json();
+            }).then((json) => {
+                if (json.response) {
+                    $("#online").addClass("text-success");
+                } else {
+                    $("#online").removeClass("text-success");
+                }
+            });
+        }, 10000);
+    });
+</script>
 </body>
 
 </html>

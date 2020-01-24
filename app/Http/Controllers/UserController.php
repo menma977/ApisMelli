@@ -131,7 +131,7 @@ class UserController extends Controller
         }
         $ledger = Ledger::where('user', $user->id)->get();
         $bee = Bee::where('user', $user->id)->take(100)->orderBy('start', 'desc')->get()->groupBy(function ($item) {
-            return Carbon::parse($item->start)->format('Y-m');
+            return Carbon::parse($item->start)->format('Y-m-d');
         });
 
         $data = [

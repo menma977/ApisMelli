@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Charts\Chart;
 use App\model\Bee;
 use App\model\Ledger;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -124,6 +127,41 @@ class HomeController extends Controller
         ];
 
         return view('home', $data);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function isOnlineStatus()
+    {
+        $count = 0;
+        $online = 0;
+        $offline = 0;
+        $user = User::all();
+        foreach ($user as $item) {
+            if ($item->isOnline()) {
+                $online += 1;
+            } else {
+                $offline += 1;
+            }
+            $count += 1;
+        }
+
+        $data = [
+            'count' => $count,
+            'online' => $online,
+            'offline' => $offline,
+        ];
+
+        return response()->json($data, 200);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function authOnline()
+    {
+        return response()->json(['response' => Auth::user()->isOnline()], 200);
     }
 
     private function convertMonth($month)
