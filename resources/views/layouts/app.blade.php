@@ -24,8 +24,8 @@
     <link href="{{ url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700') }}" rel="stylesheet">
     @yield('endCSS')
 </head>
-{{--sidebar-collapse--}}
-<body class="sidebar-mini layout-fixed accent-warning" style="height: auto;">
+{{--sidebar-collapse accent-warning --}}
+<body class="sidebar-mini layout-fixed" style="height: auto;">
 <!-- Site wrapper -->
 <div class="wrapper">
 
@@ -104,8 +104,10 @@
                 return response.json();
             }).then((json) => {
                 if (json.response) {
+                    console.log("text-success");
                     $("#online").addClass("text-success");
                 } else {
+                    console.log("text-success remove");
                     $("#online").removeClass("text-success");
                 }
             });

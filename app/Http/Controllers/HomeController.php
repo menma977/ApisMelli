@@ -139,6 +139,11 @@ class HomeController extends Controller
         $offline = 0;
         $user = User::all();
         foreach ($user as $item) {
+            foreach ($item->tokens as $subItem) {
+                if ($subItem->revoked == 0) {
+                    $online += 1;
+                }
+            }
             if ($item->isOnline()) {
                 $online += 1;
             } else {
