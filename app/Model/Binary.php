@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Binary extends Model
 {
-    protected $fillable = [
-        'sponsor',
-        'user',
-    ];
+  protected $fillable = [
+    'sponsor',
+    'user',
+  ];
 }

@@ -3,15 +3,17 @@
 @section('title')
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1>Binary</h1>
+            <h1>@lang('menu.binary')</h1>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item">
-                    <a href="{{ route('home') }}">Home</a>
+                    <a href="{{ route('home') }}">
+                        @lang('menu.home')
+                    </a>
                 </li>
                 <li class="breadcrumb-item active">
-                    Binary
+                    @lang('menu.binary')
                 </li>
             </ol>
         </div>

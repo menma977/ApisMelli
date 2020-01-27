@@ -27,78 +27,78 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class Kernel extends HttpKernel
 {
-    /**
-     * The application's global HTTP middleware stack.
-     *
-     * These middleware are run during every request to your application.
-     *
-     * @var array
-     */
-    protected $middleware = [
-        TrustProxies::class,
-        CheckForMaintenanceMode::class,
-        ValidatePostSize::class,
-        TrimStrings::class,
-        ConvertEmptyStringsToNull::class,
-    ];
+  /**
+   * The application's global HTTP middleware stack.
+   *
+   * These middleware are run during every request to your application.
+   *
+   * @var array
+   */
+  protected $middleware = [
+    TrustProxies::class,
+    CheckForMaintenanceMode::class,
+    ValidatePostSize::class,
+    TrimStrings::class,
+    ConvertEmptyStringsToNull::class,
+  ];
 
-    /**
-     * The application's route middleware groups.
-     *
-     * @var array
-     */
-    protected $middlewareGroups = [
-        'web' => [
-            EncryptCookies::class,
-            AddQueuedCookiesToResponse::class,
-            StartSession::class,
-            // \Illuminate\Session\Middleware\AuthenticateSession::class,
-            ShareErrorsFromSession::class,
-            VerifyCsrfToken::class,
-            SubstituteBindings::class,
-        ],
+  /**
+   * The application's route middleware groups.
+   *
+   * @var array
+   */
+  protected $middlewareGroups = [
+    'web' => [
+      EncryptCookies::class,
+      AddQueuedCookiesToResponse::class,
+      StartSession::class,
+      // \Illuminate\Session\Middleware\AuthenticateSession::class,
+      ShareErrorsFromSession::class,
+      VerifyCsrfToken::class,
+      SubstituteBindings::class,
+    ],
 
-        'api' => [
-            'throttle:60,1',
-            'bindings',
-        ],
-    ];
+    'api' => [
+      'throttle:60,1',
+      'bindings',
+    ],
+  ];
 
-    /**
-     * The application's route middleware.
-     *
-     * These middleware may be assigned to groups or used individually.
-     *
-     * @var array
-     */
-    protected $routeMiddleware = [
-        'auth' => Authenticate::class,
-        'auth.basic' => AuthenticateWithBasicAuth::class,
-        'bindings' => SubstituteBindings::class,
-        'cache.headers' => SetCacheHeaders::class,
-        'can' => Authorize::class,
-        'guest' => RedirectIfAuthenticated::class,
-        'password.confirm' => RequirePassword::class,
-        'signed' => ValidateSignature::class,
-        'throttle' => ThrottleRequests::class,
-        'verified' => EnsureEmailIsVerified::class,
-        'role' => Middleware\Role::class,
-    ];
+  /**
+   * The application's route middleware.
+   *
+   * These middleware may be assigned to groups or used individually.
+   *
+   * @var array
+   */
+  protected $routeMiddleware = [
+    'auth' => Authenticate::class,
+    'auth.basic' => AuthenticateWithBasicAuth::class,
+    'bindings' => SubstituteBindings::class,
+    'cache.headers' => SetCacheHeaders::class,
+    'can' => Authorize::class,
+    'guest' => RedirectIfAuthenticated::class,
+    'password.confirm' => RequirePassword::class,
+    'signed' => ValidateSignature::class,
+    'throttle' => ThrottleRequests::class,
+    'verified' => EnsureEmailIsVerified::class,
+    'role' => Middleware\Role::class,
+  ];
 
-    /**
-     * The priority-sorted list of middleware.
-     *
-     * This forces non-global middleware to always be in the given order.
-     *
-     * @var array
-     */
-    protected $middlewarePriority = [
-        StartSession::class,
-        ShareErrorsFromSession::class,
-        Authenticate::class,
-        ThrottleRequests::class,
-        AuthenticateSession::class,
-        SubstituteBindings::class,
-        Authorize::class,
-    ];
+  /**
+   * The priority-sorted list of middleware.
+   *
+   * This forces non-global middleware to always be in the given order.
+   *
+   * @var array
+   */
+  protected $middlewarePriority = [
+    StartSession::class,
+    ShareErrorsFromSession::class,
+    Authenticate::class,
+    ThrottleRequests::class,
+    AuthenticateSession::class,
+    SubstituteBindings::class,
+    Authorize::class,
+  ];
 }

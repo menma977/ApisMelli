@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>QR</title>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="{{ url('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
-    <!-- Google Font: Source Sans Pro -->
-    <link href="{{ url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700') }}" rel="stylesheet">
+  <title>QR</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="{{ url('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="{{ url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700') }}" rel="stylesheet">
 </head>
 <body>
 
 <div class="visible-print text-center">
 
-    <img src="data:image/png;base64, {!! base64_encode($qr) !!} ">
+  <img src="data:image/png;base64, {!! base64_encode($qr) !!} ">
 
 </div>
 

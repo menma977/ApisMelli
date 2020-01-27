@@ -11,62 +11,62 @@ use Illuminate\View\View;
 
 class WithdrawController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Factory|View
-     */
-    public function index()
-    {
-        $requestWithdraw = Withdraw::where('status', 0)->get();
-        $requestWithdraw->map(function ($item) {
-            $item->user = User::find($item->user);
+  /**
+   * Display a listing of the resource.
+   *
+   * @return Factory|View
+   */
+  public function index()
+  {
+    $requestWithdraw = Withdraw::where('status', 0)->get();
+    $requestWithdraw->map(function ($item) {
+      $item->user = User::find($item->user);
 
-            return $item;
-        });
+      return $item;
+    });
 
-        $withdraw = Withdraw::where('status', 1)->get();
-        $withdraw->map(function ($item) {
-            $item->user = User::find($item->user);
+    $withdraw = Withdraw::where('status', 1)->get();
+    $withdraw->map(function ($item) {
+      $item->user = User::find($item->user);
 
-            return $item;
-        });
+      return $item;
+    });
 
-        $data = [
-            'requestWithdraw' => $requestWithdraw,
-            'withdraw' => $withdraw,
-        ];
+    $data = [
+      'requestWithdraw' => $requestWithdraw,
+      'withdraw' => $withdraw,
+    ];
 
-        return view('withdraw.index', $data);
+    return view('withdraw.index', $data);
+  }
+
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param $id
+   * @param $status
+   * @return RedirectResponse
+   */
+  public function update($id, $status)
+  {
+    $id = base64_decode($id);
+    $status = base64_decode($status);
+    if ($status == 1) {
+      $withdraw = Withdraw::find($id);
+      $withdraw->status = 1;
+      $withdraw->save();
+
+      $ledger = new Ledger();
+      $ledger->code = 'REG' . date("YmdHis");
+      $ledger->credit = $withdraw->total;
+      $ledger->description = User::find($withdraw->id)->name . ' telah Withdraw sejumlah : Rp' . number_format($withdraw->total, 0, ',', '.');
+      $ledger->user = $withdraw->user;
+      $ledger->ledger_type = 3;
+      $ledger->save();
+    } else {
+      Withdraw::destroy($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param $id
-     * @param $status
-     * @return RedirectResponse
-     */
-    public function update($id, $status)
-    {
-        $id = base64_decode($id);
-        $status = base64_decode($status);
-        if ($status == 1) {
-            $withdraw = Withdraw::find($id);
-            $withdraw->status = 1;
-            $withdraw->save();
-
-            $ledger = new Ledger();
-            $ledger->code = 'REG' . date("YmdHis");
-            $ledger->credit = $withdraw->total;
-            $ledger->description = User::find($withdraw->id)->name . ' telah Withdraw sejumlah : Rp' . number_format($withdraw->total, 0, ',', '.');
-            $ledger->user = $withdraw->user;
-            $ledger->ledger_type = 3;
-            $ledger->save();
-        } else {
-            Withdraw::destroy($id);
-        }
-
-        return redirect()->back();
-    }
+    return redirect()->back();
+  }
 }
