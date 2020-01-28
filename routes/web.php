@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::get('/', function () {
-  return view('welcome');
-});
+Route::get('/', 'FrontEndController@index')->name('index');
 
 Route::group(['prefix' => 'referral', 'as' => 'referral.'], function () {
   Route::get('/{username}', 'ConfigController@index')->name('index');

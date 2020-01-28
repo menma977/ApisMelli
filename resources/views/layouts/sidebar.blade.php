@@ -1,6 +1,6 @@
 <aside class="main-sidebar elevation-4 sidebar-light-warning">
   {{--navbar-warning--}}
-  <a href="{{ route('home') }}"
+  <a href="{{ url('/') }}"
      class="brand-link">
     <img src="{{ asset('dist/img/ApisMelli.png') }}" alt="Apis Melli" class="brand-image img-circle elevation-3"
          style="opacity: .8">

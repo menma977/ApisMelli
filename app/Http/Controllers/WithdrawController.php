@@ -7,6 +7,7 @@ use App\model\Withdraw;
 use App\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class WithdrawController extends Controller
@@ -18,14 +19,22 @@ class WithdrawController extends Controller
    */
   public function index()
   {
-    $requestWithdraw = Withdraw::where('status', 0)->get();
+    if (Auth::user()->role != 0) {
+      $requestWithdraw = Withdraw::where('user', Auth::user()->id)->where('status', 0)->get();
+    } else {
+      $requestWithdraw = Withdraw::where('status', 0)->get();
+    }
     $requestWithdraw->map(function ($item) {
       $item->user = User::find($item->user);
 
       return $item;
     });
 
-    $withdraw = Withdraw::where('status', 1)->get();
+    if (Auth::user()->role != 0) {
+      $withdraw = Withdraw::where('user', Auth::user()->id)->where('status', 1)->get();
+    } else {
+      $withdraw = Withdraw::where('status', 1)->get();
+    }
     $withdraw->map(function ($item) {
       $item->user = User::find($item->user);
 

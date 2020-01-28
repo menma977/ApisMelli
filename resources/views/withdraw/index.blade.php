@@ -46,7 +46,9 @@
               <th style="width: 10px">#</th>
               <th style="width: 150px">@lang('menu.user.index')</th>
               <th style="width: 300px">@lang('menu.amount') @lang('menu.withdraw')</th>
+              @admin
               <th style="width: 20px">@lang('menu.action')</th>
+              @endadmin
             </tr>
             </thead>
             <tbody>
@@ -55,6 +57,7 @@
                 <td>{{ $loop->index + 1 }}</td>
                 <td>{{ $item->user->name }}</td>
                 <td>Rp {{ number_format($item->total, 0, ',', '.') }}</td>
+                @admin
                 <td>
                   <div class="btn-group">
                     <a href="{{ route('withdraw.update', [base64_encode($item->id), base64_encode(1)]) }}"
@@ -67,6 +70,7 @@
                     </a>
                   </div>
                 </td>
+                @endadmin
               </tr>
             @endforeach
             </tbody>
