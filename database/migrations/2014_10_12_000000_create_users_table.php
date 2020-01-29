@@ -26,9 +26,9 @@ class CreateUsersTable extends Migration
       $table->text('identity_card_image')->nullable();
       $table->text('identity_card_image_salve')->nullable();
       $table->text('image')->nullable();
-      $table->integer('province');
-      $table->integer('district');
-      $table->integer('sub_district');
+      $table->text('province');
+      $table->text('district');
+      $table->text('sub_district');
       $table->text('village');
       $table->integer('number_address');
       $table->text('description_address');

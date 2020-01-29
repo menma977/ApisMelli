@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -103,28 +104,26 @@ class BeeController extends Controller
 
       $getUser = User::find($stup->user);
       if (Binary::where('user', $getUser->id)->first()) {
-        $sponsor = Binary::where('user', $getUser->id)->first()->sponsor;
+        $getSponsor = Binary::where('user', $getUser->id)->first()->sponsor;
       } else {
-        $sponsor = $getUser->id;
+        $getSponsor = $getUser->id;
       }
 
       for ($i = 0; $i < $stup->total; $i++) {
         $ledgerAdmin = new Ledger();
         $ledgerAdmin->code = 'REG' . date("YmdHis");
         $ledgerAdmin->credit = 2000000;
-        $ledgerAdmin->description = 'Pendaftaran User : Rp' . number_format($ledgerAdmin->credit, 0, ',', '.');
-        $ledgerAdmin->user = 1;
+        $ledgerAdmin->description = 'Pembelian Stup : Rp' . number_format($ledgerAdmin->credit, 0, ',', '.');
         $ledgerAdmin->ledger_type = 0;
-
-        $ledger = new Ledger();
-        $ledger->code = 'REGBON' . date("YmdHis");
-        $ledger->credit = (2 / 100) * $ledgerAdmin->credit;
-        $ledger->description = 'anda mendapatkan bonus 2% dari pembelian sebesar : Rp' . number_format($ledger->credit, 0, ',', '.');
-        $ledger->user = $sponsor;
-        $ledger->ledger_type = 2;
-
         $ledgerAdmin->save();
-        $ledger->save();
+
+        $ledgers = new Ledger();
+        $ledgers->code = 'REGBON' . date("YmdHis");
+        $ledgers->credit = (2 / 100) * $ledgerAdmin->credit;
+        $ledgers->description = 'anda mendapatkan bonus 2% dari pembelian sebesar : Rp' . number_format($ledgers->credit, 0, ',', '.');
+        $ledgers->user = $getSponsor;
+        $ledgers->ledger_type = 2;
+        $ledgers->save();
 
         $bee = Bee::whereNull('user')->first();
         $bee->user = $getUser->id;

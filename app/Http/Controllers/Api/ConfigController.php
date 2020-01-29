@@ -38,14 +38,23 @@ class ConfigController extends Controller
       'password' => 'required|string',
     ]);
     if (Auth::attempt(['username' => request('username'), 'password' => request('password')])) {
-      $token = Auth::user()->tokens;
-      foreach ($token as $key => $value) {
-        $value->revoke();
-        $value->save();
-      }
       $user = Auth::user();
-      $user->token = $user->createToken('App')->accessToken;
-      return response()->json(['response' => $user->token], 200);
+      if ($user->status == 0) {
+        $data = [
+          'message' => 'The given data was invalid.',
+          'errors' => [
+            'validation' => ['Akun Anda telah ditangguhkan. silakan hubungi admin.'],
+          ],
+        ];
+        return response()->json($data, 422);
+      } else {
+        $token = Auth::user()->tokens;
+        foreach ($token as $key => $value) {
+          $value->delete();
+        }
+        $user->token = $user->createToken('App')->accessToken;
+        return response()->json(['response' => $user->token], 200);
+      }
     } else {
       $data = [
         'message' => 'The given data was invalid.',
@@ -72,8 +81,9 @@ class ConfigController extends Controller
   {
     $token = Auth::user()->tokens;
     foreach ($token as $key => $value) {
-      $value->revoke();
-      $value->save();
+//      $value->revoke();
+//      $value->save();
+      $value->delete();
     }
     return response()->json([
       'response' => 'Successfully logged out',
@@ -124,9 +134,7 @@ class ConfigController extends Controller
     $binary->user = $user->id;
     $binary->save();
 
-    $user->token = $user->createToken('App')->accessToken;
-
-    return response()->json(['response' => $user->token], 200);
+    return response()->json(['response' => 'User telah terdaftar mohon login untuk meneruskan'], 200);
   }
 
   /**

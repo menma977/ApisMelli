@@ -44,17 +44,17 @@ class HomeController extends Controller
 
     if ($getOldPercent < $getNewPercent) {
       if ($type == 0) {
-        return $data = ["text" => 'text-success', "icon" => 'fas fa-caret-up', "percent" => $total];
+        return $data = ["text" => 'text-success', "icon" => 'fas fa-angle-double-down', "percent" => $total];
       } else {
-        return $data = ["text" => 'text-danger', "icon" => 'fas fa-caret-down', "percent" => $total];
+        return $data = ["text" => 'text-danger', "icon" => 'fas fa-angle-double-up', "percent" => $total];
       }
     } else if ($getOldPercent == $getNewPercent) {
-      return $data = ["text" => 'text-warning', "icon" => 'fas fa-caret-left', "percent" => $total];
+      return $data = ["text" => 'text-warning', "icon" => 'fas fa-angle-double-right', "percent" => $total];
     } else {
       if ($type == 0) {
-        return $data = ["text" => 'text-danger', "icon" => 'fas fa-caret-down', "percent" => $total];
+        return $data = ["text" => 'text-danger', "icon" => 'fas fa-angle-double-up', "percent" => $total];
       } else {
-        return $data = ["text" => 'text-success', "icon" => 'fas fa-caret-up', "percent" => $total];
+        return $data = ["text" => 'text-success', "icon" => 'fas fa-angle-double-down', "percent" => $total];
       }
     }
   }
@@ -66,56 +66,124 @@ class HomeController extends Controller
    */
   public function index()
   {
-    $month = Ledger::get()->groupBy(function ($item) {
-      return Carbon::parse($item->created_at)->format('m');
-    });
+    if (Auth::user()->role == 0) {
+      $month = Ledger::get()->groupBy(function ($item) {
+        return Carbon::parse($item->created_at)->format('m');
+      });
+
+      $ledgerOld = Ledger::whereYear('created_at', (Carbon::now()->format('Y') - 1))->get()->groupBy(function ($item) {
+        return Carbon::parse($item->created_at)->format('m');
+      });
+
+      $ledger = Ledger::whereYear('created_at', Carbon::now()->format('Y'))->get()->groupBy(function ($item) {
+        return Carbon::parse($item->created_at)->format('m');
+      });
+
+      $countIncome = Ledger::whereYear('created_at', Carbon::now()->format('Y'))->whereIn('ledger_type', [0])->sum('credit');
+      $countOutcome = Ledger::whereYear('created_at', Carbon::now()->format('Y'))->whereIn('ledger_type', [1, 2, 3])->sum('debit') + Ledger::whereYear('created_at', Carbon::now()->format('Y'))->whereIn('ledger_type', [1, 2, 3])->sum('credit');
+    } else {
+      $month = Ledger::where('user', Auth::user()->id)->get()->groupBy(function ($item) {
+        return Carbon::parse($item->created_at)->format('m');
+      });
+
+      $ledgerOld = Ledger::where('user', Auth::user()->id)->whereYear('created_at', (Carbon::now()->format('Y') - 1))->get()->groupBy(function ($item) {
+        return Carbon::parse($item->created_at)->format('m');
+      });
+
+      $ledger = Ledger::where('user', Auth::user()->id)->whereYear('created_at', Carbon::now()->format('Y'))->get()->groupBy(function ($item) {
+        return Carbon::parse($item->created_at)->format('m');
+      });
+
+      $countIncome = Ledger::where('user', Auth::user()->id)->whereYear('created_at', Carbon::now()->format('Y'))->whereIn('ledger_type', [0, 2])->sum('credit');
+      $countOutcome = Ledger::where('user', Auth::user()->id)->whereYear('created_at', Carbon::now()->format('Y'))->whereIn('ledger_type', [1, 3])->sum('debit') + Ledger::where('user', Auth::user()->id)->whereYear('created_at', Carbon::now()->format('Y'))->whereIn('ledger_type', [1, 3])->sum('credit');
+    }
+    if ($countOutcome && $countIncome) {
+      $totalProfit = ($countOutcome / $countIncome) * 100;
+    } else {
+      $totalProfit = 0;
+    }
+
     $mount = array();
     foreach ($month as $id => $item) {
       array_push($mount, $this->convertMonth($id));
     }
 
-    //income
-    $incomeOld = array();
-    $ledgerOld = Ledger::whereYear('created_at', (Carbon::now()->format('Y') - 1))->get()->groupBy(function ($item) {
-      return Carbon::parse($item->created_at)->format('m');
-    });
-    foreach ($ledgerOld as $id => $item) {
-      $countDebit = 0;
-      foreach ($item->whereIn('ledger_type', [0, 2]) as $subId => $subItem) {
-        $countDebit += $subItem->credit;
+    if (Auth::user()->role == 0) {
+      //income
+      $incomeOld = array();
+      foreach ($ledgerOld as $id => $item) {
+        $countDebit = 0;
+        foreach ($item->whereIn('ledger_type', [0]) as $subId => $subItem) {
+          $countDebit += $subItem->credit;
+        }
+        array_push($incomeOld, $countDebit);
       }
-      array_push($incomeOld, $countDebit);
-    }
 
-    $income = array();
-    $ledger = Ledger::whereYear('created_at', Carbon::now()->format('Y'))->get()->groupBy(function ($item) {
-      return Carbon::parse($item->created_at)->format('m');
-    });
-    foreach ($ledger as $id => $item) {
-      $countCredit = 0;
-      foreach ($item->whereIn('ledger_type', [0, 2]) as $subId => $subItem) {
-        $countCredit += $subItem->credit;
+      $income = array();
+      foreach ($ledger as $id => $item) {
+        $countCredit = 0;
+        foreach ($item->whereIn('ledger_type', [0]) as $subId => $subItem) {
+          $countCredit += $subItem->credit;
+        }
+        array_push($income, $countCredit);
       }
-      array_push($income, $countCredit);
-    }
 
-    //outcome
-    $outcomeOld = array();
-    foreach ($ledgerOld as $id => $item) {
-      $countDebit = 0;
-      foreach ($item->whereIn('ledger_type', [1, 3]) as $subId => $subItem) {
-        $countDebit += $subItem->debit + $subItem->credit;
+      //outcome
+      $outcomeOld = array();
+      foreach ($ledgerOld as $id => $item) {
+        $countDebit = 0;
+        foreach ($item->whereIn('ledger_type', [1, 2, 3]) as $subId => $subItem) {
+          $countDebit += $subItem->debit + $subItem->credit;
+        }
+        array_push($outcomeOld, $countDebit);
       }
-      array_push($outcomeOld, $countDebit);
-    }
 
-    $outcome = array();
-    foreach ($ledger as $id => $item) {
-      $countCredit = 0;
-      foreach ($item->whereIn('ledger_type', [1, 3]) as $subId => $subItem) {
-        $countCredit += $subItem->debit + $subItem->credit;
+      $outcome = array();
+      foreach ($ledger as $id => $item) {
+        $countCredit = 0;
+        foreach ($item->whereIn('ledger_type', [1, 2, 3]) as $subId => $subItem) {
+          $countCredit += $subItem->debit + $subItem->credit;
+        }
+        array_push($outcome, $countCredit);
       }
-      array_push($outcome, $countCredit);
+    } else {
+      //income
+      $incomeOld = array();
+      foreach ($ledgerOld as $id => $item) {
+        $countDebit = 0;
+        foreach ($item->whereIn('ledger_type', [0, 2]) as $subId => $subItem) {
+          $countDebit += $subItem->credit;
+        }
+        array_push($incomeOld, $countDebit);
+      }
+
+      $income = array();
+      foreach ($ledger as $id => $item) {
+        $countCredit = 0;
+        foreach ($item->whereIn('ledger_type', [0, 2]) as $subId => $subItem) {
+          $countCredit += $subItem->credit;
+        }
+        array_push($income, $countCredit);
+      }
+
+      //outcome
+      $outcomeOld = array();
+      foreach ($ledgerOld as $id => $item) {
+        $countDebit = 0;
+        foreach ($item->whereIn('ledger_type', [1, 3]) as $subId => $subItem) {
+          $countDebit += $subItem->debit + $subItem->credit;
+        }
+        array_push($outcomeOld, $countDebit);
+      }
+
+      $outcome = array();
+      foreach ($ledger as $id => $item) {
+        $countCredit = 0;
+        foreach ($item->whereIn('ledger_type', [1, 3]) as $subId => $subItem) {
+          $countCredit += $subItem->debit + $subItem->credit;
+        }
+        array_push($outcome, $countCredit);
+      }
     }
 
     $chartData = new Chart;
@@ -127,9 +195,14 @@ class HomeController extends Controller
       'chart' => $chartData,
       'income' => $this->arrayData($incomeOld, $income, 0),
       'outcome' => $this->arrayData($outcomeOld, $outcome, 1),
-      'CountIncome' => Ledger::whereYear('created_at', Carbon::now()->format('Y'))->whereIn('ledger_type', [0, 2])->sum('credit'),
-      'CountOutcome' => Ledger::whereYear('created_at', Carbon::now()->format('Y'))->whereIn('ledger_type', [1, 3])->sum('debit')
-        + Ledger::whereYear('created_at', Carbon::now()->format('Y'))->whereIn('ledger_type', [1, 3])->sum('credit'),
+      'total' => [
+        'text' => 'text-info',
+        'icon' => 'fa fa-balance-scale',
+        'percent' => $totalProfit,
+      ],
+      'CountIncome' => $countIncome,
+      'CountOutcome' => $countOutcome,
+      'CountTotal' => $countIncome - $countOutcome,
     ];
 
     return view('home', $data);
@@ -145,17 +218,23 @@ class HomeController extends Controller
     $offline = 0;
     $user = User::all();
     foreach ($user as $item) {
+      if ($item->isOnline()) {
+        $online++;
+      } else {
+        $offline++;
+      }
+      $count++;
       foreach ($item->tokens as $subItem) {
-        if ($subItem->revoked == 0) {
-          $online += 1;
+        if (!$item->isOnline()) {
+          if ($subItem->revoked == 0) {
+            $online++;
+            $offline--;
+          } else {
+            $online--;
+            $offline++;
+          }
         }
       }
-      if ($item->isOnline()) {
-        $online += 1;
-      } else {
-        $offline += 1;
-      }
-      $count += 1;
     }
 
     $data = [

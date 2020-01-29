@@ -34,6 +34,7 @@ return [
   ],
   'accept' => 'Terima',
   'cancel' => 'Batalkan',
+  'edit' => 'Ubah',
   'online' => 'User Aktif',
   'offline' => 'User Non Aktif',
   'income' => 'Pemasukan',

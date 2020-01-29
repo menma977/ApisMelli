@@ -34,6 +34,7 @@ return [
   ],
   'accept' => 'Accept',
   'cancel' => 'Cancel',
+  'edit' => 'Edit',
   'online' => 'Online User',
   'offline' => 'Online User',
   'income' => 'Income',

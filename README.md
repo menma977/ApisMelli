@@ -96,7 +96,7 @@ protected $policies = [
 
 ##### config/auth.php
 ###### TokenGuard
-```js
+```
 'guards' => [
     'web' => [
         'driver' => 'session',

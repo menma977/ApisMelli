@@ -47,16 +47,25 @@
               </td>
               @if($item->role == 0)
                 <td>Admin</td>
+                <td>
+                  <button type="button" class="btn btn-block btn-sm btn-warning">
+                    {{ $item->username }}
+                  </button>
+                </td>
               @else
                 <td>@lang('menu.user.index')</td>
+                <td>
+                  <button type="button" class="btn btn-block btn-sm btn-warning" data-toggle="modal"
+                          data-target="#modal-{{ $item->username }}">
+                    {{ $item->username }}
+                  </button>
+                </td>
               @endif
               <td>
-                <button type="button" class="btn btn-block btn-sm btn-warning" data-toggle="modal"
-                        data-target="#modal-{{ $item->username }}">
-                  {{ $item->username }}
-                </button>
+                <a href="{{ route('user.show', base64_encode($item->id)) }}" class="btn btn-block btn-outline-secondary btn-sm">
+                  {{ $item->name }}
+                </a>
               </td>
-              <td>{{ $item->name }}</td>
               <td>{{ $item->email }}</td>
               <td>{{ $item->phone }}</td>
               <td>{{ $item->id_identity_card }}</td>

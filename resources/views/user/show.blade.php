@@ -71,7 +71,7 @@
                 @lang('menu.user.province')
               </b>
               <a class="float-right">
-                {{ $user->province ? $user->province->name : 'Belum di isi' }}
+                {{ $user->province ? $user->province : 'Belum di isi' }}
               </a>
             </li>
             <li class="list-group-item">
@@ -79,7 +79,7 @@
                 @lang('menu.user.district')
               </b>
               <a class="float-right">
-                {{ $user->district ? $user->district->name : 'Belum di isi' }}
+                {{ $user->district ? $user->district : 'Belum di isi' }}
               </a>
             </li>
             <li class="list-group-item">
@@ -87,7 +87,7 @@
                 @lang('menu.user.sub_district')
               </b>
               <a class="float-right">
-                {{ $user->sub_district ? $user->sub_district->name : 'Belum di isi' }}
+                {{ $user->sub_district ? $user->sub_district : 'Belum di isi' }}
               </a>
             </li>
             <li class="list-group-item">
@@ -99,9 +99,9 @@
               </a>
             </li>
           </ul>
-          {{--                    <a href="#" class="btn btn-warning btn-block">--}}
-          {{--                        <b>Follow</b>--}}
-          {{--                    </a>--}}
+          <a href="#" class="btn btn-warning btn-block">
+            <b>@lang('menu.edit') @lang('menu.user.index')</b>
+          </a>
         </div>
       </div>
 

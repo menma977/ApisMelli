@@ -83,7 +83,7 @@ class LoginController extends Controller
     $user = User::where($this->username(), $request->{$this->username()})->first();
 
     if ($user && Hash::check($request->password, $user->password) && $user->status == 0) {
-      $errors = [$this->username() => trans('Your Account has been suspended. please contact admin')];
+      $errors = [$this->username() => trans('Akun Anda telah ditangguhkan. silakan hubungi admin')];
     }
 
     if ($request->expectsJson()) {

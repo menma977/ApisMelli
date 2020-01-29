@@ -64,7 +64,7 @@
         </div>
         <div class="card-footer">
           <div class="row">
-            <div class="col-sm-6 col-6">
+            <div class="col-sm-4 col-4">
               <div class="description-block border-right">
                 <div class="description-percentage {{ $income["text"] }}">
                   <i class="{{ $income["icon"] }}"></i>
@@ -74,7 +74,7 @@
                 <div class="description-text">@lang('menu.income')</div>
               </div>
             </div>
-            <div class="col-sm-6 col-6">
+            <div class="col-sm-4 col-4">
               <div class="description-block">
                 <div class="description-percentage {{ $outcome["text"] }}">
                   <i class="{{ $outcome["icon"] }}"></i>
@@ -82,6 +82,16 @@
                 </div>
                 <h5 class="description-header">Rp {{ number_format($CountOutcome, 0, ',', '.') }}</h5>
                 <div class="description-text">@lang('menu.outcome')</div>
+              </div>
+            </div>
+            <div class="col-sm-4 col-4">
+              <div class="description-block">
+                <div class="description-percentage {{ $total["text"] }}">
+                  <i class="{{ $total["icon"] }}"></i>
+                  {{ $total["percent"] }}%
+                </div>
+                <h5 class="description-header">Rp {{ number_format($CountTotal, 0, ',', '.') }}</h5>
+                <div class="description-text">Total</div>
               </div>
             </div>
           </div>
@@ -105,6 +115,7 @@
           fetch('{{ route('config.isOnlineStatus') }}').then((response) => {
               return response.json();
           }).then((json) => {
+              console.log(json);
               $("#onlineUserCount").html(json.online);
               let percentOnline = (json.online / json.count) * 100;
               $("#onlineUser").css({"width": percentOnline + "%"});

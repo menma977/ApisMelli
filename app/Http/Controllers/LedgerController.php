@@ -27,7 +27,11 @@ class LedgerController extends Controller
    */
   public function index()
   {
-    $ledger = Ledger::where('user', Auth::user()->id)->orderBy('id', 'desc')->get();
+    if (Auth::user()->role == 0) {
+      $ledger = Ledger::orderBy('id', 'desc')->get();
+    } else {
+      $ledger = Ledger::where('user', Auth::user()->id)->orderBy('id', 'desc')->get();
+    }
     $ledger->map(function ($item) {
       $item->user = User::find($item->user);
     });

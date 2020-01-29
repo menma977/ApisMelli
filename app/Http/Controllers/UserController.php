@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\model\Bee;
 use App\model\Binary;
-use App\model\District;
 use App\model\Ledger;
-use App\model\Province;
-use App\model\SubDistrict;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
@@ -130,9 +127,6 @@ class UserController extends Controller
   {
     $id = base64_decode($id);
     $user = User::find($id);
-    $user->province = Province::find($user->province);
-    $user->district = District::find($user->district);
-    $user->sub_district = SubDistrict::find($user->sub_district);
     $binary = Binary::where('user', $user->id)->first();
     if ($user->role == 0) {
       $sponsor = User::find(1);
