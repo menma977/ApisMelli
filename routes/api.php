@@ -19,6 +19,13 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 Route::post('login', 'Api\ConfigController@login');
 Route::post('register', 'Api\ConfigController@register');
 
+Route::group(['prefix' => 'notify', 'as' => 'notify.'], function () {
+  Route::get('/', 'NotificationController@index')->name('index');
+  Route::post('/store', 'NotificationController@store')->name('store');
+  Route::post('/update/{id}', 'NotificationController@update')->name('update');
+  Route::post('/destroy/{id}', 'NotificationController@destroy')->name('destroy');
+});
+
 Route::group(['prefix' => 'cron', 'as' => 'cron.'], function () {
   Route::get('run', 'Api\CronJobController@run')->name('run');
 });
