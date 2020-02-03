@@ -115,7 +115,6 @@
           fetch('{{ route('config.isOnlineStatus') }}').then((response) => {
               return response.json();
           }).then((json) => {
-              console.log(json);
               $("#onlineUserCount").html(json.online);
               let percentOnline = (json.online / json.count) * 100;
               $("#onlineUser").css({"width": percentOnline + "%"});

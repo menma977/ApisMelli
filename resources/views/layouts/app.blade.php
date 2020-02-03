@@ -99,7 +99,6 @@
               $("#online").removeClass("text-success");
           }
       });
-
         setInterval(function () {
             fetch('{{ route('config.authOnline') }}').then((response) => {
                 return response.json();
@@ -107,7 +106,6 @@
                 if (json.response) {
                     $("#online").addClass("text-success");
                 } else {
-                    console.log("text-success remove");
                     $("#online").removeClass("text-success");
                 }
             });

@@ -39,6 +39,11 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
   Route::get('/delete/{id}', 'UserController@destroy')->name('delete')->middleware('auth', 'role:0');
 });
 
+Route::group(['prefix' => 'config', 'as' => 'config.'], function () {
+  Route::get('/', 'HomeController@isOnlineStatus')->name('isOnlineStatus')->middleware('auth', 'role:0|1');
+  Route::get('/user/status', 'HomeController@authOnline')->name('authOnline')->middleware('auth', 'role:0|1');
+});
+
 Route::group(['prefix' => 'bee', 'as' => 'bee.'], function () {
   Route::get('/', 'BeeController@index')->name('index')->middleware('auth', 'role:0');
   Route::post('/store', 'BeeController@store')->name('store')->middleware('auth', 'role:0');
@@ -67,9 +72,4 @@ Route::group(['prefix' => 'withdraw', 'as' => 'withdraw.'], function () {
 Route::group(['prefix' => 'binary', 'as' => 'binary.'], function () {
   Route::get('/', 'BinaryController@index')->name('index')->middleware('auth', 'role:0|1');
   Route::get('/find/{id}', 'BinaryController@show')->name('show')->middleware('auth', 'role:0|1');
-});
-
-Route::group(['prefix' => 'config', 'as' => 'config.'], function () {
-  Route::get('/', 'HomeController@isOnlineStatus')->name('isOnlineStatus')->middleware('auth', 'role:0|1');
-  Route::get('/auth/s', 'HomeController@authOnline')->name('authOnline')->middleware('auth', 'role:0|1');
 });

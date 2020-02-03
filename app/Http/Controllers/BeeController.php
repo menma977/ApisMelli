@@ -11,7 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -153,6 +152,7 @@ class BeeController extends Controller
 
     $data = [
       'qr' => $QR,
+      'code' => $bee->code,
     ];
 
     return view('bee.qrCode', $data);

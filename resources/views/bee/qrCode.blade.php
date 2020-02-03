@@ -16,6 +16,8 @@
 <div class="visible-print text-center">
 
   <img src="data:image/png;base64, {!! base64_encode($qr) !!} ">
+  <h5>{{ $code }}</h5>
+  <small>{{ URL::to('/') }}</small>
 
 </div>
 
