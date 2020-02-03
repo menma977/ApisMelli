@@ -24,6 +24,7 @@ class CreateNotificationsTable extends Migration
       $table->string("rbg");
       $table->string("description");
       $table->text("full_description");
+      $table->boolean("read");
       $table->timestamps();
     });
   }

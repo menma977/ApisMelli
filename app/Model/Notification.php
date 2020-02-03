@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string rbg
  * @property string description
  * @property string full_description
+ * @property boolean read
  */
 class Notification extends Model
 {
@@ -38,6 +39,7 @@ class Notification extends Model
    * @var array
    */
   protected $hidden = [
-    'id'
+    'id',
+    'read',
   ];
 }

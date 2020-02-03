@@ -22,7 +22,7 @@ class NotificationController extends Controller
    */
   public function index()
   {
-    $notification = Notification::all();
+    $notification = Notification::where("read", false)->get();
 
     return response()->json(['response' => $notification], 200);
   }
@@ -53,6 +53,7 @@ class NotificationController extends Controller
     }
     $notification->description = $request->description;
     $notification->full_description = $request->full_description;
+    $notification->read = false;
     $notification->save();
 
     return response()->json(['response' => 'data is saved'], 200);
@@ -91,6 +92,13 @@ class NotificationController extends Controller
     if ($request->full_description) {
       $notification->full_description = $request->full_description;
     }
+
+    if ($request->status || $request->description || $request->full_description) {
+      $notification->read = false;
+    } else {
+      $notification->read = true;
+    }
+
     $notification->save();
 
     return response()->json(['response' => 'data is update'], 200);
