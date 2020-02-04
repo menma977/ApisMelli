@@ -204,7 +204,7 @@
         <div class="modal-header">
           <h4 class="modal-title">@lang('menu.create a Stup')</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <div aria-hidden="true">&times;</div>
+            &times;
           </button>
         </div>
         <form action="{{ route('bee.store') }}" method="POST">
@@ -230,7 +230,7 @@
         <div class="modal-header">
           <h4 class="modal-title">@lang('menu.print Barcode')</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <div aria-hidden="true">&times;</div>
+            &times;
           </button>
         </div>
         <form action="{{ route('bee.QRCodeList') }}" method="POST">
