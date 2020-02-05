@@ -463,7 +463,7 @@
 
       <div class="row">
         <div class="col-xl-12">
-          <p class="copy">&copy; 2019 <a href="#" target="_blank">Apis Meli</a>. All Rights Reserved.</p>
+          <p class="copy">&copy; 2019 <a href="#" target="_blank">Apis Cerana</a>. All Rights Reserved.</p>
         </div>
       </div>
     </div>

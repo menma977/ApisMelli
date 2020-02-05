@@ -34,8 +34,6 @@
                  onclick="addCaret('{{ $item->user }}')" style="min-width: 200px">
                 @if ($item->userDownLine)
                   {{ $item->userDownLine->name }}
-                @else
-                  <img src="{{ asset('dist/img/AdminLTELogo.png') }}" class="imageFrame">
                 @endif
               </a>
               <div id="{{ $item->user }}"></div>
@@ -81,11 +79,6 @@
       display: inline-block;
       left: -7px;
     }
-
-    .imageFrame {
-      width: 40px;
-      margin: 10px;
-    }
   </style>
 @endsection
 
@@ -110,14 +103,7 @@
                   let htmlBody = '';
                   responseData.forEach(element => {
                       idSponsor = element.sponsor;
-                      let user = '';
-                      let image = '';
-                      if (element.userDownLine.image) {
-                          image = '<img src="image/' + element.userDownLine.image + '" class="imageFrame">';
-                      } else {
-                          image = '<img src="{{ asset("image/user.png") }}" class="imageFrame">';
-                      }
-                      user = '<li>' +
+                      let user = '<li>' +
                           '<a href="#" id="caret-'
                           + element.user
                           + '" class="fa fa-plus-circle" onclick="addCaret(`%data%`)" style="min-width: 200px"> '

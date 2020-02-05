@@ -2,7 +2,7 @@
 
 @section('content')
   <div class="login-logo">
-    <a href="{{ url('/') }}">Apis Meli</a>
+    <a href="{{ url('/') }}">Apis Cerana</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Model\Notification;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
 class NotificationController extends Controller
@@ -16,13 +16,20 @@ class NotificationController extends Controller
    * @return JsonResponse
    *
    * * Status
-   * * * 0: Danger -> #007bff
+   * * * 0: Danger -> #dd4b39
    * * * 0: Warning -> #ffc107
    * * * 0: Info -> #17a2b8
    */
   public function index()
   {
     $notification = Notification::where("read", false)->get();
+    $notification->map(function ($item) {
+      $now = Carbon::now()->addHour();
+      if ($now->gt($item->updated_at)) {
+        $item->read = true;
+        $item->save();
+      }
+    });
 
     return response()->json(['response' => $notification], 200);
   }
@@ -45,7 +52,7 @@ class NotificationController extends Controller
     $notification = new Notification();
     $notification->status = $request->status;
     if ($notification->status == 0) {
-      $notification->rbg = "#007bff";
+      $notification->rbg = "#dd4b39";
     } else if ($notification->status == 1) {
       $notification->rbg = "#ffc107";
     } else {
@@ -79,7 +86,7 @@ class NotificationController extends Controller
     if ($request->status) {
       $notification->status = $request->status;
       if ($notification->status == 0) {
-        $notification->rbg = "#007bff";
+        $notification->rbg = "#dd4b39";
       } else if ($notification->status == 1) {
         $notification->rbg = "#ffc107";
       } else {

@@ -7,7 +7,7 @@
 
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Apis Meli</title>
+  <title>Apis Cerana</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Favicon icon -->
   <link rel="shortcut icon" href="{{ asset('dist/img/ApisMelli.png') }}" type="image/x-icon">
