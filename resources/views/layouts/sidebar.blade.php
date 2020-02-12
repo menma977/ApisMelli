@@ -2,9 +2,9 @@
   {{--navbar-warning--}}
   <a href="{{ url('/') }}"
      class="brand-link">
-    <img src="{{ asset('dist/img/ApisMelli.png') }}" alt="Apis Melli" class="brand-image img-circle elevation-3"
+    <img src="{{ asset('dist/img/ApisMelli.png') }}" alt="Apis Cerana" class="brand-image img-circle elevation-3"
          style="opacity: .8">
-    <span class="brand-text font-weight-light">Apis Melli</span>
+    <span class="brand-text font-weight-light">Apis Cerana</span>
   </a>
 
   <div class="sidebar">

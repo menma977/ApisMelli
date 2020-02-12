@@ -28,6 +28,7 @@ class Notification extends Model
    */
   protected $fillable = [
     'status',
+    'read',
     'rbg',
     'description',
     'full_description',
@@ -40,6 +41,5 @@ class Notification extends Model
    */
   protected $hidden = [
     'id',
-    'read',
   ];
 }

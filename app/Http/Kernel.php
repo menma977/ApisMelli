@@ -83,6 +83,7 @@ class Kernel extends HttpKernel
     'throttle' => ThrottleRequests::class,
     'verified' => EnsureEmailIsVerified::class,
     'role' => Middleware\Role::class,
+    'authOnline' => Middleware\AuthOnline::class,
   ];
 
   /**

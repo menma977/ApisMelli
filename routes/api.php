@@ -30,7 +30,7 @@ Route::group(['prefix' => 'cron', 'as' => 'cron.'], function () {
   Route::get('run', 'Api\CronJobController@run')->name('run');
 });
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware(['auth:api', 'authOnline'])->group(function () {
 
   Route::get('verification', 'Api\ConfigController@verification');
 

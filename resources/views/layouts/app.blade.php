@@ -55,7 +55,7 @@
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 3.0.1
     </div>
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AbisMeli.io</a>.</strong> All rights
+    <strong>Copyright &copy; 2014-2019 <a href="http://malahabel.com/">malahabel.com</a>.</strong> All rights
     reserved.
   </footer>
 </div>
@@ -109,7 +109,7 @@
                     $("#online").removeClass("text-success");
                 }
             });
-        }, 10000);
+        }, 30000);
     });
 </script>
 </body>

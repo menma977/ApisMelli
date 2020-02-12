@@ -15,7 +15,8 @@
     "laravel/passport": "^8.0",
     "laravel/tinker": "^2.0",
     "simplesoftwareio/simple-qrcode": "^2.0",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "ext-json": "*"
   },
   "require-dev": {
     "facade/ignition": "^1.4",
