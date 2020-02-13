@@ -15,13 +15,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\File;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class ConfigController extends Controller
 {
   /**
    * @return JsonResponse
    */
-  public function verification()
+  public function verification(): JsonResponse
   {
     return response()->json(['response' => Auth::check()], 200);
   }
@@ -30,8 +31,9 @@ class ConfigController extends Controller
    * @param Request $request
    * @return JsonResponse
    * @throws ValidationException
+   * @var Object_ $user
    */
-  public function login(Request $request)
+  public function login(Request $request): ?JsonResponse
   {
     $this->validate($request, [
       'username' => 'required|string',
@@ -39,7 +41,7 @@ class ConfigController extends Controller
     ]);
     if (Auth::attempt(['username' => request('username'), 'password' => request('password')])) {
       $user = Auth::user();
-      if ($user->status == 0) {
+      if (($user !== null) && $user->status == 0) {
         $data = [
           'message' => 'The given data was invalid.',
           'errors' => [
@@ -47,29 +49,31 @@ class ConfigController extends Controller
           ],
         ];
         return response()->json($data, 422);
-      } else {
-        $token = Auth::user()->tokens;
-        foreach ($token as $key => $value) {
-          $value->delete();
-        }
-        $user->token = $user->createToken('App')->accessToken;
-        return response()->json(['response' => $user->token], 200);
       }
-    } else {
-      $data = [
-        'message' => 'The given data was invalid.',
-        'errors' => [
-          'validation' => ['username atau password tidak valid.'],
-        ],
-      ];
-      return response()->json($data, 422);
+
+      $token = Auth::user()->tokens;
+      foreach ($token as $key => $value) {
+        //$value->delete();
+        $value->revoke();
+        $value->save();
+      }
+      $user->token = $user->createToken('Android')->accessToken;
+      return response()->json(['response' => $user->token], 200);
     }
+
+    $data = [
+      'message' => 'The given data was invalid.',
+      'errors' => [
+        'validation' => ['username atau password tidak valid.'],
+      ],
+    ];
+    return response()->json($data, 422);
   }
 
   /**
    * @return JsonResponse
    */
-  public function show()
+  public function show(): JsonResponse
   {
     return response()->json(['response' => Auth::user()], 200);
   }
@@ -77,13 +81,13 @@ class ConfigController extends Controller
   /**
    * @return JsonResponse
    */
-  public function logout()
+  public function logout(): JsonResponse
   {
     $token = Auth::user()->tokens;
     foreach ($token as $key => $value) {
-//      $value->revoke();
-//      $value->save();
-      $value->delete();
+      //$value->delete();
+      $value->revoke();
+      $value->save();
     }
     return response()->json([
       'response' => 'Successfully logged out',
@@ -95,7 +99,7 @@ class ConfigController extends Controller
    * @return JsonResponse
    * @throws ValidationException
    */
-  public function register(Request $request)
+  public function register(Request $request): JsonResponse
   {
     $this->validate($request, [
       'sponsor' => 'required|string|exists:users,username',
@@ -141,8 +145,9 @@ class ConfigController extends Controller
    * @param Request $request
    * @return JsonResponse
    * @throws ValidationException
+   * @var Object_ $user
    */
-  public function update(Request $request)
+  public function update(Request $request): JsonResponse
   {
     if (Hash::check($request->password, Auth::user()->password)) {
       $this->validate($request, [
@@ -152,25 +157,30 @@ class ConfigController extends Controller
       ]);
 
       $user = Auth::user();
-      $user->password = bcrypt($request->new_password);
+      if ($user !== null) {
+        $user->password = bcrypt($request->new_password);
+      }
       $user->save();
 
       $data = [
         'response' => 'Password anda saat ini adalah: ' . $request->new_password,
       ];
       return response()->json($data, 200);
-    } else {
-      $data = [
-        'message' => 'The given data was invalid.',
-        'errors' => [
-          'password' => ['Password lama anda tidak cocok'],
-        ],
-      ];
-      return response()->json($data, 422);
     }
+
+    $data = [
+      'message' => 'The given data was invalid.',
+      'errors' => [
+        'password' => ['Password lama anda tidak cocok'],
+      ],
+    ];
+    return response()->json($data, 422);
   }
 
-  public function balance()
+  /**
+   * @return JsonResponse
+   */
+  public function balance(): JsonResponse
   {
     $balance = Ledger::where('user', Auth::user()->id)->sum('credit') - Ledger::where('user', Auth::user()->id)->sum('debit');
 
@@ -185,47 +195,48 @@ class ConfigController extends Controller
    * @param Request $request
    * @return JsonResponse
    * @throws ValidationException
+   * @var Object_ $user
    */
-  public function updateProfile(Request $request)
+  public function updateProfile(Request $request): JsonResponse
   {
     $user = Auth::user();
     if ($request->image) {
       $this->validate($request, [
         'image' => 'required|mimes:jpeg,png,jpg',
       ]);
-      if ($user->image) {
-        $fileName = explode("/", $user->image);
+      if (($user !== null) && $user->image) {
+        $fileName = explode('/', $user->image);
         File::delete('dist/img/' . $fileName[4]);
       }
       $imageName = time() . '.' . $request->image->extension();
 
-      $request->image->move("images", $imageName);
+      $request->image->move('images', $imageName);
       $user->image = $request->root() . '/images' . '/' . $imageName;
     }
     if ($request->identity_card_image) {
       $this->validate($request, [
         'identity_card_image' => 'required|mimes:jpeg,png,jpg',
       ]);
-      if ($user->identity_card_image) {
-        $fileName = explode("/", $user->identity_card_image);
+      if (($user !== null) && $user->identity_card_image) {
+        $fileName = explode('/', $user->identity_card_image);
         File::delete('dist/img/ktp/' . $fileName[4]);
       }
       $imageName = time() . '.' . $request->identity_card_image->extension();
 
-      $request->identity_card_image->move("dist/img/ktp/", $imageName);
+      $request->identity_card_image->move('dist/img/ktp/', $imageName);
       $user->identity_card_image = $request->root() . '/dist/img/ktp' . '/' . $imageName;
     }
     if ($request->identity_card_image_salve) {
       $this->validate($request, [
         'identity_card_image_salve' => 'required|mimes:jpeg,png,jpg',
       ]);
-      if ($user->identity_card_image_salve) {
-        $fileName = explode("/", $user->identity_card_image_salve);
+      if (($user !== null) && $user->identity_card_image_salve) {
+        $fileName = explode('/', $user->identity_card_image_salve);
         File::delete('dist/img/ktp/user/' . $fileName[4]);
       }
       $imageName = time() . '.' . $request->identity_card_image_salve->extension();
 
-      $request->identity_card_image_salve->move("dist/img/ktp/user/", $imageName);
+      $request->identity_card_image_salve->move('dist/img/ktp/user/', $imageName);
       $user->identity_card_image_salve = $request->root() . '/dist/img/ktp/user/' . $imageName;
     }
     $user->save();
@@ -236,51 +247,66 @@ class ConfigController extends Controller
    * @param Request $request
    * @return JsonResponse
    * @throws ValidationException
+   * @var Object_ $user
    */
-  public function updateData(Request $request)
+  public function updateData(Request $request): JsonResponse
   {
     $user = Auth::user();
     if ($request->name) {
       $this->validate($request, [
         'name' => 'required|string',
       ]);
-      $user->name = $request->name;
+      if ($user !== null) {
+        $user->name = $request->name;
+      }
     }
     if ($request->province) {
       $this->validate($request, [
         'province' => 'required|string',
       ]);
-      $user->province = $request->province;
+      if ($user !== null) {
+        $user->province = $request->province;
+      }
     }
     if ($request->district) {
       $this->validate($request, [
         'district' => 'required|string',
       ]);
-      $user->district = $request->district;
+      if ($user !== null) {
+        $user->district = $request->district;
+      }
     }
     if ($request->sub_district) {
       $this->validate($request, [
         'sub_district' => 'required|string',
       ]);
-      $user->sub_district = $request->sub_district;
+      if ($user !== null) {
+        $user->sub_district = $request->sub_district;
+      }
     }
     if ($request->village) {
       $this->validate($request, [
         'village' => 'required|string',
       ]);
-      $user->village = $request->village;
+      if ($user !== null) {
+        $user->village = $request->village;
+      }
     }
     if ($request->number_address) {
       $this->validate($request, [
         'number_address' => 'required|string',
       ]);
-      $user->number_address = $request->number_address;
+      if ($user !== null) {
+        $user->number_address = $request->number_address;
+      }
     }
     if ($request->description_address) {
       $this->validate($request, [
         'description_address' => 'required|string|min:10',
       ]);
-      $user->description_address = $request->description_address;
+      if ($user !== null) {
+        $user->description_address = $request->description_address;
+      }
     }
     $user->save();
     return response()->json(['response' => 'Data telah di update'], 200);
@@ -289,7 +315,7 @@ class ConfigController extends Controller
   /**
    * @return JsonResponse
    */
-  public function withdrawValidate()
+  public function withdrawValidate(): JsonResponse
   {
     $withdraw = Withdraw::where('user', Auth::user()->id)->where('status', 0)->count();
     return response()->json(['response' => $withdraw], 200);
@@ -300,7 +326,7 @@ class ConfigController extends Controller
    * @return JsonResponse
    * @throws ValidationException
    */
-  public function withdraw(Request $request)
+  public function withdraw(Request $request): JsonResponse
   {
     $limit = Ledger::where('user', Auth::user()->id)->sum('credit') - Ledger::where('user', Auth::user()->id)->sum('debit');
     $this->validate($request, [
@@ -321,7 +347,7 @@ class ConfigController extends Controller
    * @return JsonResponse
    * @throws ValidationException
    */
-  public function checkSetup(Request $request)
+  public function checkSetup(Request $request): ?JsonResponse
   {
     $this->validate($request, [
       'qr' => 'required|string|exists:bees,qr',
@@ -330,15 +356,15 @@ class ConfigController extends Controller
     $bee = Bee::where('qr', $request->qr)->first();
     if ($bee->user == Auth::user()->id) {
       return response()->json(['response' => $bee], 200);
-    } else {
-      $data = [
-        'message' => 'The given data was invalid.',
-        'errors' => [
-          'qr' => ['Barcode ini bukan milik anda'],
-        ],
-      ];
-      return response()->json($data, 422);
     }
+
+    $data = [
+      'message' => 'The given data was invalid.',
+      'errors' => [
+        'qr' => ['Barcode ini bukan milik anda'],
+      ],
+    ];
+    return response()->json($data, 422);
   }
 
   /**
@@ -346,7 +372,7 @@ class ConfigController extends Controller
    * @return JsonResponse
    * @throws ValidationException
    */
-  public function requestStup(Request $request)
+  public function requestStup(Request $request): JsonResponse
   {
     $this->validate($request, [
       'total' => 'required|numeric',

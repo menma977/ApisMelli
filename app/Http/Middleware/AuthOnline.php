@@ -21,7 +21,7 @@ class AuthOnline
   {
     if (Auth::check()) {
       $expiresAt = Carbon::now()->addMinute(1);
-      Cache::put("activeUser" . Auth::user()->id, true, $expiresAt);
+      Cache::put('activeUser' . Auth::user()->id, true, $expiresAt);
     }
 
     return $next($request);

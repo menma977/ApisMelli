@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticate;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Passport\HasApiTokens;
@@ -30,7 +30,7 @@ use Laravel\Passport\HasApiTokens;
  * @method static where(string $string, $id)
  * @method static find(false|string $id)
  */
-class User extends Authenticatable
+class User extends Authenticate
 {
   use HasApiTokens, Notifiable;
 
@@ -77,8 +77,8 @@ class User extends Authenticatable
     'email_verified_at' => 'datetime',
   ];
 
-  public function isOnline()
+  public function isOnline(): bool
   {
-    return Cache::has("activeUser" . $this->id);
+    return Cache::has('activeUser' . $this->id);
   }
 }

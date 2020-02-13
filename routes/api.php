@@ -12,9 +12,10 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
  */
-header('Access-Control-Allow-Origin: *');
-header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+
+//header('Access-Control-Allow-Origin: *');
+//header('Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization');
+//header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
 
 Route::post('login', 'Api\ConfigController@login');
 Route::post('register', 'Api\ConfigController@register');
@@ -30,8 +31,7 @@ Route::group(['prefix' => 'cron', 'as' => 'cron.'], function () {
   Route::get('run', 'Api\CronJobController@run')->name('run');
 });
 
-Route::middleware(['auth:api', 'authOnline'])->group(function () {
-
+Route::middleware('auth:api')->group(function () {
   Route::get('verification', 'Api\ConfigController@verification');
 
   Route::get('logout', 'Api\ConfigController@logout');
