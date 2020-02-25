@@ -20,7 +20,7 @@
                   KSU NIAGA MANDIRI SEJAHTERA
                 </p>
                 <a data-animation="animated fadeInUp delay-10s"
-                   href="{{ url('https://play.google.com/store/apps/details?id=co.multipayment') }}"
+                   href="#"
                    class="btn btn-lg btn-round btn-theme">
                   Download Aplikasinya sekarang
                 </a>

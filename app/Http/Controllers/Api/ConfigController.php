@@ -53,9 +53,9 @@ class ConfigController extends Controller
 
       $token = Auth::user()->tokens;
       foreach ($token as $key => $value) {
-        //$value->delete();
-        $value->revoke();
-        $value->save();
+        $value->delete();
+        //$value->revoke();
+        //$value->save();
       }
       $user->token = $user->createToken('Android')->accessToken;
       return response()->json(['response' => $user->token], 200);
@@ -85,9 +85,9 @@ class ConfigController extends Controller
   {
     $token = Auth::user()->tokens;
     foreach ($token as $key => $value) {
-      //$value->delete();
-      $value->revoke();
-      $value->save();
+      $value->delete();
+      //$value->revoke();
+      //$value->save();
     }
     return response()->json([
       'response' => 'Successfully logged out',

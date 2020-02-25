@@ -22,7 +22,7 @@ class HomeController extends Controller
     $this->middleware('auth');
   }
 
-  private function arrayData($oldArray, $newArray, $type)
+  private function arrayData($oldArray, $newArray, $type): ?array
   {
     $countOld = count($oldArray);
     $old = 0;
@@ -44,18 +44,16 @@ class HomeController extends Controller
 
     if ($getOldPercent < $getNewPercent) {
       if ($type == 0) {
-        return $data = ["text" => 'text-success', "icon" => 'fas fa-angle-double-down', "percent" => $total];
+        return ['text' => 'text-success', 'icon' => 'fas fa-angle-double-down', 'percent' => $total];
       } else {
-        return $data = ["text" => 'text-danger', "icon" => 'fas fa-angle-double-up', "percent" => $total];
+        return ['text' => 'text-danger', 'icon' => 'fas fa-angle-double-up', 'percent' => $total];
       }
     } else if ($getOldPercent == $getNewPercent) {
-      return $data = ["text" => 'text-warning', "icon" => 'fas fa-angle-double-right', "percent" => $total];
+      return ['text' => 'text-warning', 'icon' => 'fas fa-angle-double-right', 'percent' => $total];
+    } else if ($type == 0) {
+      return ['text' => 'text-danger', 'icon' => 'fas fa-angle-double-up', 'percent' => $total];
     } else {
-      if ($type == 0) {
-        return $data = ["text" => 'text-danger', "icon" => 'fas fa-angle-double-up', "percent" => $total];
-      } else {
-        return $data = ["text" => 'text-success', "icon" => 'fas fa-angle-double-down', "percent" => $total];
-      }
+      return ['text' => 'text-success', 'icon' => 'fas fa-angle-double-down', 'percent' => $total];
     }
   }
 
@@ -64,7 +62,7 @@ class HomeController extends Controller
    *
    * @return Renderable
    */
-  public function index()
+  public function index(): Renderable
   {
     if (Auth::user()->role == 0) {
       $month = Ledger::get()->groupBy(function ($item) {
@@ -188,8 +186,8 @@ class HomeController extends Controller
 
     $chartData = new Chart;
     $chartData->labels($mount);
-    $chartData->dataset('Pemasukan', 'line', $income)->color("rgba(66,165,214,1)")->backgroundcolor("rgba(66,165,214,1)")->fill(false)->linetension(0.1);
-    $chartData->dataset('Pengeluaran', 'line', $outcome)->color("rgba(214,79,66,1)")->backgroundcolor("rgba(214,79,66,1)")->fill(false)->linetension(0.1);
+    $chartData->dataset('Pemasukan', 'line', $income)->color('rgba(66,165,214,1)')->backgroundcolor('rgba(66,165,214,1)')->fill(false)->linetension(0.1);
+    $chartData->dataset('Pengeluaran', 'line', $outcome)->color('rgba(214,79,66,1)')->backgroundcolor('rgba(214,79,66,1)')->fill(false)->linetension(0.1);
 
     $data = [
       'chart' => $chartData,

@@ -66,9 +66,9 @@
           <div class="row">
             <div class="col-sm-4 col-4">
               <div class="description-block border-right">
-                <div class="description-percentage {{ $income["text"] }}">
-                  <i class="{{ $income["icon"] }}"></i>
-                  {{ $income["percent"] }}%
+                <div class="description-percentage {{ $income['text'] }}">
+                  <i class="{{ $income['icon'] }}"></i>
+                  {{ number_format($income['percent'] / 100, 0) }}%
                 </div>
                 <h5 class="description-header">Rp {{ number_format($CountIncome, 0, ',', '.') }}</h5>
                 <div class="description-text">@lang('menu.income')</div>
@@ -76,9 +76,9 @@
             </div>
             <div class="col-sm-4 col-4">
               <div class="description-block">
-                <div class="description-percentage {{ $outcome["text"] }}">
-                  <i class="{{ $outcome["icon"] }}"></i>
-                  {{ $outcome["percent"] }}%
+                <div class="description-percentage {{ $outcome['text'] }}">
+                  <i class="{{ $outcome['icon'] }}"></i>
+                  {{ number_format($outcome['percent'] / 100, 0) }}%
                 </div>
                 <h5 class="description-header">Rp {{ number_format($CountOutcome, 0, ',', '.') }}</h5>
                 <div class="description-text">@lang('menu.outcome')</div>
@@ -86,9 +86,9 @@
             </div>
             <div class="col-sm-4 col-4">
               <div class="description-block">
-                <div class="description-percentage {{ $total["text"] }}">
-                  <i class="{{ $total["icon"] }}"></i>
-                  {{ $total["percent"] }}%
+                <div class="description-percentage {{ $total['text'] }}">
+                  <i class="{{ $total['icon'] }}"></i>
+                  {{ $total['percent'] }}%
                 </div>
                 <h5 class="description-header">Rp {{ number_format($CountTotal, 0, ',', '.') }}</h5>
                 <div class="description-text">Total</div>
@@ -112,6 +112,7 @@
   @endif
   <script>
       $(function () {
+
           fetch('{{ route('config.isOnlineStatus') }}').then((response) => {
               return response.json();
           }).then((json) => {

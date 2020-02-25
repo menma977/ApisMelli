@@ -99,9 +99,9 @@
               </a>
             </li>
           </ul>
-          <a href="#" class="btn btn-warning btn-block">
-            <b>@lang('menu.edit') @lang('menu.user.index')</b>
-          </a>
+{{--          <a href="#" class="btn btn-warning btn-block">--}}
+{{--            <b>@lang('menu.edit') @lang('menu.user.index')</b>--}}
+{{--          </a>--}}
         </div>
       </div>
 

@@ -68,7 +68,8 @@ class NotificationController extends Controller
     $notification->read = false;
     $notification->save();
 
-    $response = $this->sendToFireBase($notification->description, $notification->full_description, $notification->status);
+    $title = $notification->description . '-' . $notification->created_at;
+    $this->sendToFireBase($title, $notification->full_description, $notification->status);
 
     return response()->json(['response' => 'data is saved'], 200);
   }

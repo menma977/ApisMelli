@@ -15,6 +15,7 @@ return [
   'user' => [
     'index' => 'User',
     'show' => 'Detail',
+    'edit' => 'Edit',
     'email' => 'Email',
     'phone' => 'Phone number',
     'id card number' => 'ID card number',

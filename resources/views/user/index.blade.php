@@ -62,7 +62,8 @@
                 </td>
               @endif
               <td>
-                <a href="{{ route('user.show', base64_encode($item->id)) }}" class="btn btn-block btn-outline-secondary btn-sm">
+                <a href="{{ route('user.show', base64_encode($item->id)) }}"
+                   class="btn btn-block btn-outline-secondary btn-sm">
                   {{ $item->name }}
                 </a>
               </td>

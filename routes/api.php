@@ -27,9 +27,9 @@ Route::group(['prefix' => 'notify', 'as' => 'notify.'], function () {
   Route::post('/destroy/{id}', 'NotificationController@destroy')->name('destroy');
 });
 
-Route::group(['prefix' => 'cron', 'as' => 'cron.'], function () {
-  Route::get('run', 'Api\CronJobController@run')->name('run');
-});
+//Route::group(['prefix' => 'cron', 'as' => 'cron.'], function () {
+//  Route::get('run', 'Api\CronJobController@run')->name('run');
+//});
 
 Route::middleware('auth:api')->group(function () {
   Route::get('verification', 'Api\ConfigController@verification');

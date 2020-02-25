@@ -15,6 +15,7 @@ return [
   'user' => [
     'index' => 'Pengguna',
     'show' => 'Detail',
+    'edit' => 'Edit',
     'email' => 'Surel',
     'phone' => 'Nomor Telepon',
     'id card number' => 'Nomor KTP',
