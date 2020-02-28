@@ -16,6 +16,7 @@ class Stup extends Model
   protected $fillable = [
     'user',
     'total',
+    'code',
     'status',
   ];
 }

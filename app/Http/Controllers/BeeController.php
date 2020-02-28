@@ -61,7 +61,7 @@ class BeeController extends Controller
    * @return RedirectResponse
    * @throws ValidationException
    */
-  public function store(Request $request)
+  public function store(Request $request): RedirectResponse
   {
     $this->validate($request, [
       'count' => 'required|numeric|max:1000',
@@ -72,7 +72,7 @@ class BeeController extends Controller
 
       $bee = new Bee();
       $bee->qr = $lastId;
-      $bee->code = 'QR' . date("YmdHis") . $lastId;
+      $bee->code = 'QR' . date('YmdHis') . $lastId;
       $bee->save();
     }
 
@@ -86,7 +86,7 @@ class BeeController extends Controller
    * @param $status
    * @return RedirectResponse
    */
-  public function update($stup, $status)
+  public function update($stup, $status): RedirectResponse
   {
     $stup = base64_decode($stup);
     $status = base64_decode($status);
@@ -110,14 +110,14 @@ class BeeController extends Controller
 
       for ($i = 0; $i < $stup->total; $i++) {
         $ledgerAdmin = new Ledger();
-        $ledgerAdmin->code = 'REG' . date("YmdHis");
+        $ledgerAdmin->code = 'REG' . date('YmdHis');
         $ledgerAdmin->credit = 2000000;
         $ledgerAdmin->description = 'Pembelian Stup : Rp' . number_format($ledgerAdmin->credit, 0, ',', '.');
         $ledgerAdmin->ledger_type = 0;
         $ledgerAdmin->save();
 
         $ledgers = new Ledger();
-        $ledgers->code = 'REGBON' . date("YmdHis");
+        $ledgers->code = 'REGBON' . date('YmdHis');
         $ledgers->credit = (2 / 100) * $ledgerAdmin->credit;
         $ledgers->description = 'anda mendapatkan bonus 2% dari pembelian sebesar : Rp' . number_format($ledgers->credit, 0, ',', '.');
         $ledgers->user = $getSponsor;
@@ -131,7 +131,7 @@ class BeeController extends Controller
         $bee->save();
       }
     } else {
-      Stup::destroy($status);
+      Stup::destroy($stup);
     }
 
     return redirect()->back();

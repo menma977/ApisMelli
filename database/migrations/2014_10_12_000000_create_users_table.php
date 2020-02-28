@@ -21,6 +21,8 @@ class CreateUsersTable extends Migration
       $table->string('email')->unique();
       $table->timestamp('email_verified_at')->nullable();
       $table->string('password');
+      $table->string('bank');
+      $table->string('pin_bank');
       $table->string('phone')->unique();
       $table->string('id_identity_card')->unique();
       $table->text('identity_card_image')->nullable();

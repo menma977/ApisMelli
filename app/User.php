@@ -15,6 +15,8 @@ use Laravel\Passport\HasApiTokens;
  * @property string username
  * @property string email
  * @property string password
+ * @property string bank
+ * @property string pin_bank
  * @property string phone
  * @property int id_identity_card
  * @property string identity_card_image
@@ -46,6 +48,8 @@ class User extends Authenticate
     'email',
     'password',
     'phone',
+    'bank',
+    'pin_bank',
     'id_identity_card',
     'identity_card_image',
     'identity_card_image_salve',

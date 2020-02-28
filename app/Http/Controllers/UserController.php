@@ -70,7 +70,7 @@ class UserController extends Controller
    * @return RedirectResponse
    * @throws ValidationException
    */
-  public function store(Request $request)
+  public function store(Request $request): RedirectResponse
   {
     $this->validate($request, [
       'name' => 'required|string',
@@ -78,6 +78,8 @@ class UserController extends Controller
       'email' => 'required|email|unique:users',
       'password' => 'required|min:6',
       'c_password' => 'required|min:6|same:password',
+      'bank' => 'required|string',
+      'pin_bank' => 'required|numeric|min:10|unique:users',
       'phone' => 'required|numeric|min:10|unique:users',
       'id_identity_card' => 'required|numeric|unique:users',
       'identity_card_image' => 'required|image|mimes:jpeg,jpg,png|max:20000',
@@ -96,6 +98,8 @@ class UserController extends Controller
     $user->username = $request->username;
     $user->email = $request->email;
     $user->password = bcrypt($request->password);
+    $user->bank = $request->bank;
+    $user->pin_bank = $request->pin_bank;
     $user->phone = $request->phone;
     $user->id_identity_card = $request->id_identity_card;
     $user->identity_card_image = $request->identity_card_image;

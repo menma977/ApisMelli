@@ -45,7 +45,7 @@ Route::middleware('auth:api')->group(function () {
   });
 
   Route::group(['prefix' => 'withdraw', 'as' => 'withdraw.'], function () {
-    Route::post('show', 'Api\ConfigController@withdrawValidate')->name('show');
+    Route::get('show', 'Api\ConfigController@withdrawValidate')->name('show');
     Route::post('store', 'Api\ConfigController@withdraw')->name('store');
   });
 

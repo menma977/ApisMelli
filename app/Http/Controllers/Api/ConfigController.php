@@ -9,6 +9,7 @@ use App\model\Ledger;
 use App\Model\Stup;
 use App\model\Withdraw;
 use App\User;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,12 +20,29 @@ use PhpParser\Node\Expr\Cast\Object_;
 
 class ConfigController extends Controller
 {
+
+  protected $nominal_stup = 2000000;
+
   /**
    * @return JsonResponse
    */
   public function verification(): JsonResponse
   {
     return response()->json(['response' => Auth::check()], 200);
+  }
+
+  /**
+   * @return array
+   */
+  private function adminData(): array
+  {
+    $admin = User::find(1);
+
+    return [
+      'name' => $admin->name,
+      'bank' => $admin->bank,
+      'pin_bank' => $admin->pin_bank,
+    ];
   }
 
   /**
@@ -183,9 +201,12 @@ class ConfigController extends Controller
   public function balance(): JsonResponse
   {
     $balance = Ledger::where('user', Auth::user()->id)->sum('credit') - Ledger::where('user', Auth::user()->id)->sum('debit');
-
+    $stup = Stup::where('user', Auth::user()->id)->where('status', 0)->get();
     $data = [
       'balance' => 'Rp ' . number_format($balance, 0, ',', '.'),
+      'admin' => $this->adminData(),
+      'data' => $stup,
+      'nominal' => $this->nominal_stup
     ];
 
     return response()->json($data, 200);
@@ -350,11 +371,12 @@ class ConfigController extends Controller
   public function checkSetup(Request $request): ?JsonResponse
   {
     $this->validate($request, [
-      'qr' => 'required|string|exists:bees,qr',
+      'qr' => 'required|exists:bees,qr',
     ]);
 
     $bee = Bee::where('qr', $request->qr)->first();
     if ($bee->user == Auth::user()->id) {
+      $bee->user = Auth::user()->username;
       return response()->json(['response' => $bee], 200);
     }
 
@@ -371,6 +393,7 @@ class ConfigController extends Controller
    * @param Request $request
    * @return JsonResponse
    * @throws ValidationException
+   * @throws Exception
    */
   public function requestStup(Request $request): JsonResponse
   {
@@ -381,9 +404,16 @@ class ConfigController extends Controller
     $stup = new Stup();
     $stup->user = Auth::user()->id;
     $stup->total = $request->total;
+    $stup->code = random_int(99, 999);
     $stup->status = 0;
     $stup->save();
 
-    return response()->json(['response' => 'Stup Anda sedang di proses oleh admin'], 200);
+    $data = [
+      'response' => 'Stup Anda sedang di proses oleh admin',
+      'admin' => $this->adminData(),
+      'total' => ($stup->total * $this->nominal_stup) + $stup->code,
+    ];
+
+    return response()->json($data, 200);
   }
 }
