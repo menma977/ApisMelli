@@ -159,7 +159,7 @@ class UserController extends Controller
    * @param $status
    * @return RedirectResponse
    */
-  public function update($id, $status)
+  public function update($id, $status): RedirectResponse
   {
     $id = base64_decode($id);
     $status = base64_decode($status);
@@ -186,7 +186,7 @@ class UserController extends Controller
    * @param int $id
    * @return RedirectResponse
    */
-  public function destroy($id)
+  public function destroy($id): RedirectResponse
   {
     $id = base64_decode($id);
     $user = User::find($id);

@@ -157,7 +157,7 @@
                         <div class="col-sm-12 text-center">
                           @if($item->identity_card_image)
                             <img
-                                src="{{ asset('dist/img/ktp/'.$item->identity_card_image) }}"
+                                src="{{ $item->identity_card_image }}"
                                 class="img-fluid mb-2" style="height: 250px; width: 550px;" alt="ktp"/>
                           @else
                             <img
@@ -168,7 +168,7 @@
                         <div class="col-sm-12 text-center">
                           @if($item->identity_card_image_salve)
                             <img
-                                src="{{ asset('dist/img/ktp/user/'.$item->identity_card_image_salve) }}"
+                                src="{{ $item->identity_card_image_salve }}"
                                 class="img-fluid mb-2" style="height: 250px; width: 550px;" alt="ktp and user"/>
                           @else
                             <img
