@@ -92,6 +92,7 @@
                   <tr class="text-center">
                     <th style="width: 10px">#</th>
                     <th style="width: 100px">@lang('menu.receiver')</th>
+                    <th style="width: 10px">@lang('menu.nominal')</th>
                     <th style="width: 10px">@lang('menu.amount')</th>
                     <th style="width: 10px">@lang('menu.action')</th>
                   </tr>
@@ -100,6 +101,7 @@
                   @foreach($stup->where('status', 0) as $item)
                     <tr class="text-center">
                       <td>{{ $loop->index + 1 }}</td>
+                      <td>{{ $item->total * 2000000 }}</td>
                       <td>{{ $item->user ? $item->user->username : 'Belum Terpakai' }}</td>
                       <td>{{ $item->total }}</td>
                       <td>
@@ -135,6 +137,7 @@
                   <tr class="text-center">
                     <th style="width: 10px">#</th>
                     <th style="width: 100px">@lang('menu.receiver')</th>
+                    <th style="width: 10px">@lang('menu.nominal')</th>
                     <th style="width: 10px">@lang('menu.amount')</th>
                     <th style="width: 10px">@lang('menu.date')</th>
                   </tr>
@@ -143,6 +146,7 @@
                   @foreach($stup->where('status', '!=', 0) as $item)
                     <tr class="text-center">
                       <td>{{ $loop->index + 1 }}</td>
+                      <td>{{ $item->total * 2000000 }}</td>
                       <td>{{ $item->user ? $item->user->username : 'Belum Terpakai' }}</td>
                       <td>{{ $item->total }}</td>
                       <td>{{ \Carbon\Carbon::parse($item->updated_at)->format('d/m/Y H:i:s') }}</td>

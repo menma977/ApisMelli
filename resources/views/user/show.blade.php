@@ -32,7 +32,7 @@
         <div class="card-body box-profile">
           <div class="text-center">
             <img class="profile-user-img img-fluid img-circle"
-                 src="{{ $user->image ? asset('dist/img/'.$user->image) : asset('dist/img/user.png') }}"
+                 src="{{ $user->image ? asset($user->image) : asset('dist/img/user.png') }}"
                  alt="User profile picture">
           </div>
           <h3 class="profile-username text-center">

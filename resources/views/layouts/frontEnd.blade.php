@@ -38,7 +38,7 @@
       <div class="col-12">
         <nav class="navbar navbar-expand-lg navbar-light rounded">
           <a class="navbar-brand navbar-brand d-flex mr-auto" href="{{ url('/') }}">
-            <img src="{{ asset('dist/img/ApisMelli.png') }}" style="width: 10%">
+            <img src="{{ asset('dist/img/ApisMelli.png') }}" style="height: 50px;width: 50px;">
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
                   aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">

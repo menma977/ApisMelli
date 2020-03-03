@@ -85,7 +85,7 @@
                       <div class="col-md-4">
                         <div class="text-center">
                           <img class="profile-user-img img-fluid img-circle"
-                               src="{{ $item->image ? asset('dist/img/'.$item->image) : asset('dist/img/user.png') }}"
+                               src="{{ $item->image ? asset($item->image) : asset('dist/img/user.png') }}"
                                alt="User profile picture">
                         </div>
                         <h3 class="profile-username text-center">

@@ -11,7 +11,7 @@
       <a class="nav-link" data-toggle="dropdown" href="#">
         <div class="image">
           <img
-              src="{{ Auth::user()->image ? asset('dist/img/'.Auth::user()->image) : asset('dist/img/user.png') }}"
+              src="{{ Auth::user()->image ? asset(Auth::user()->image) : asset('dist/img/user.png') }}"
               class="img-circle elevation-2" alt="User Image" style="width:50px;height:50px">
         </div>
       </a>

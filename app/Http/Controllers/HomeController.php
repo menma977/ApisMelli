@@ -209,7 +209,7 @@ class HomeController extends Controller
   /**
    * @return JsonResponse
    */
-  public function isOnlineStatus()
+  public function isOnlineStatus(): JsonResponse
   {
     $count = 0;
     $online = 0;

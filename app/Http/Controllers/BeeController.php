@@ -148,7 +148,7 @@ class BeeController extends Controller
     $id = base64_decode($id);
     $bee = Bee::find($id);
 
-    $QR = QrCode::format('png')->size(500)->merge('dist/img/ApisMelli.png', 0.3, true)->errorCorrection('H')->generate($bee->qr);
+    $QR = QrCode::format('png')->size(500)->merge('dist/img/apisqr.png', .2, true)->errorCorrection('H')->generate($bee->qr);
 
     $data = [
       'qr' => $QR,
@@ -172,7 +172,7 @@ class BeeController extends Controller
     ]);
     $bee = Bee::whereNull('user')->whereNull('user')->take($request->count)->get();
     $bee->map(function ($item) {
-      $item->BarCode = QrCode::format('png')->size(250)->merge('dist/img/ApisMelli.png', 0.3, true)->errorCorrection('H')->generate($item->qr);
+      $item->BarCode = QrCode::format('png')->size(250)->merge('dist/img/apisqr.png', .2, true)->errorCorrection('H')->generate($item->qr);
     });
 
     $data = [

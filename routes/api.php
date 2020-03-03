@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Route;
 //header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
 
 Route::post('login', 'Api\ConfigController@login');
-Route::post('register', 'Api\ConfigController@register');
 
 Route::group(['prefix' => 'notify', 'as' => 'notify.'], function () {
   Route::get('/', 'NotificationController@index')->name('index');
@@ -32,6 +31,8 @@ Route::group(['prefix' => 'notify', 'as' => 'notify.'], function () {
 //});
 
 Route::middleware('auth:api')->group(function () {
+  Route::post('register', 'Api\ConfigController@register');
+
   Route::get('verification', 'Api\ConfigController@verification');
 
   Route::get('logout', 'Api\ConfigController@logout');

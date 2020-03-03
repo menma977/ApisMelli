@@ -1,6 +1,7 @@
 <?php
 
 return [
+  'nominal' => 'Nominal Transfer',
   'login' => 'Login',
   'logout' => 'Logout',
   'forgetPassword' => 'Forgot Your Password?',

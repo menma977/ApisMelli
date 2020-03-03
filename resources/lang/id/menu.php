@@ -1,6 +1,7 @@
 <?php
 
 return [
+  'nominal' => 'Nominal Transfer',
   'login' => 'Masuk',
   'logout' => 'Keluar',
   'forgetPassword' => 'Lupa Kata Sandi?',

@@ -66,7 +66,7 @@ class ConfigController extends Controller
             'validation' => ['Akun Anda telah ditangguhkan. silakan hubungi admin.'],
           ],
         ];
-        return response()->json($data, 422);
+        return response()->json($data, 422); //new change 500
       }
 
       $token = Auth::user()->tokens;
@@ -120,7 +120,6 @@ class ConfigController extends Controller
   public function register(Request $request): JsonResponse
   {
     $this->validate($request, [
-      'sponsor' => 'required|string|exists:users,username',
       'name' => 'required|string',
       'username' => 'required|string|min:6|unique:users',
       'email' => 'required|email|unique:users',
@@ -128,6 +127,8 @@ class ConfigController extends Controller
       'c_password' => 'required|min:6|same:password',
       'id_identity_card' => 'required|numeric|unique:users',
       'phone' => 'required|unique:users|numeric|digits_between:10,15',
+      'bank' => 'required|string',
+      'pin_bank' => 'required|string|unique:users',
       'province' => 'required|string',
       'district' => 'required|string',
       'sub_district' => 'required|string',
@@ -143,6 +144,8 @@ class ConfigController extends Controller
     $user->password = bcrypt($request->password);
     $user->phone = $request->phone;
     $user->id_identity_card = $request->id_identity_card;
+    $user->bank = $request->bank;
+    $user->pin_bank = $request->pin_bank;
     $user->province = $request->province;
     $user->district = $request->district;
     $user->sub_district = $request->sub_district;
@@ -152,7 +155,7 @@ class ConfigController extends Controller
     $user->save();
 
     $binary = new Binary();
-    $binary->sponsor = User::where('username', $request->sponsor)->first()->id;
+    $binary->sponsor = Auth::user()->id;
     $binary->user = $user->id;
     $binary->save();
 

@@ -20,23 +20,25 @@ class FrontEndController extends Controller
     $files = File::files('dist/img/gallery');
     foreach ($files as $id => $value) {
       $file = pathinfo($value);
-      $imageName[$id] = $file["basename"];
+      $imageName[$id] = $file['basename'];
     }
 
     $files = File::files('dist/img/partner');
     foreach ($files as $id => $value) {
       $file = pathinfo($value);
-      $imagePartner[$id] = $file["basename"];
+      $imagePartner[$id] = $file['basename'];
     }
 
     foreach ($user as $item) {
       foreach ($item->tokens as $subItem) {
         if ($subItem->revoked == 0) {
-          $online += 1;
+          ++$online;
+        } else {
+          --$online;
         }
       }
       if ($item->isOnline()) {
-        $online += 1;
+        ++$online;
       }
     }
 
