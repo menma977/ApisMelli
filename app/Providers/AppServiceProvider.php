@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
    *
    * @return void
    */
-  public function boot()
+  public function boot(): void
   {
     view()->composer('layouts.sidebar', function ($view) {
       $stup = Stup::where('status', 0)->count();
@@ -35,11 +35,11 @@ class AppServiceProvider extends ServiceProvider
     });
 
     Blade::if('admin', function () {
-      return Auth::user() && Auth::user()->role == 0 ? true : false;
+      return (Auth::user() && Auth::user()->role == 0);
     });
 
     Blade::if('member', function () {
-      return Auth::user() && Auth::user()->role == 1 ? true : false;
+      return (Auth::user() && Auth::user()->role == 1);
     });
   }
 }

@@ -29,8 +29,6 @@ use Laravel\Passport\HasApiTokens;
  * @property int number_address
  * @property string description_address
  * @property int status
- * @method static where(string $string, $id)
- * @method static find(false|string $id)
  */
 class User extends Authenticate
 {
